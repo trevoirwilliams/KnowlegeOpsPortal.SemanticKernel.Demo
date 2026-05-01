@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="KnowledgeOps.Console/KnowledgeOps.Console.csproj" />
+  <Project Path="KnowledgeOps.Web/KnowledgeOps.Web.csproj" />
+</Solution>
