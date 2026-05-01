@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\KnowledgeOps.AI\KnowledgeOps.AI.csproj" />
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f26e800f-68c5-4974-bd1a-6211d136f6ad</UserSecretsId>
   </PropertyGroup>
 
 </Project>

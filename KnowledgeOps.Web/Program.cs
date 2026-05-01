@@ -1,7 +1,10 @@
+using KnowledgeOps.AI;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 
 var app = builder.Build();
 

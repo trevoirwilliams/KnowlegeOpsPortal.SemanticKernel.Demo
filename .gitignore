@@ -1,0 +1,107 @@
+###############################################################
+# .NET / MSBuild
+###############################################################
+
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# NuGet restore artefacts (lock files are intentionally kept)
+*.nupkg
+*.snupkg
+project.nuget.cache
+*.nuget.props
+*.nuget.targets
+nuget.dgspec.json
+.nuget/
+
+# Publish output
+[Pp]ublish/
+[Pp]ublish[Oo]utput/
+
+###############################################################
+# Visual Studio / VS Code IDE artefacts
+###############################################################
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+.localhistory/
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# VS Code workspace state (keep .vscode/settings.json and launch.json
+# by explicitly including them below if you want them tracked)
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+###############################################################
+# .NET User Secrets (stored outside the repo by default, but
+# guard against any accidental local copies)
+###############################################################
+secrets.json
+appsettings.secrets.json
+appsettings.local.json
+
+# Never commit real environment overrides
+.env
+.env.*
+!.env.example
+
+###############################################################
+# ASP.NET Core
+###############################################################
+
+# Development certificate
+*.pfx
+*.p12
+
+# Static web asset manifests (generated at build)
+*.staticwebassets.endpoints.json
+
+###############################################################
+# Test results & coverage
+###############################################################
+
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage*/
+
+###############################################################
+# OS artefacts
+###############################################################
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+###############################################################
+# Explicitly KEEP these important root files
+###############################################################
+
+# Central package version management — always track this
+!Directory.Packages.props
+!Directory.Build.props
+!Directory.Build.targets
