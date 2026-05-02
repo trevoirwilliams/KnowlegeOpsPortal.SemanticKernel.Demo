@@ -1,4 +1,5 @@
 ﻿using KnowledgeOps.AI;
+using KnowledgeOps.AI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +10,7 @@ builder.Configuration.AddUserSecrets<Program>(optional: false);
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 using var host = builder.Build();
 
-var chat = host.Services.GetRequiredService<IChatCompletionService>();
+var chat = host.Services.GetRequiredService<IKnowledgeOpsChatClient>();
 var history = new ChatHistory("You are a concise, helpful assistant for business app demos.");
 
 Console.WriteLine("Type messages. Type exit to quit.");
@@ -22,9 +23,7 @@ while (true)
         break;
     }
     history.AddUserMessage(input);
-    var response = await chat.GetChatMessageContentAsync(history);
-    var text = response.Content ?? string.Empty;
-    history.AddMessage(response.Role, text);
-
-    Console.WriteLine($"Assistant > {text}");
+    var response = await chat.ReplyAsync(history);
+    history.AddAssistantMessage(response);
+    Console.WriteLine($"Assistant > {response}");
 }
