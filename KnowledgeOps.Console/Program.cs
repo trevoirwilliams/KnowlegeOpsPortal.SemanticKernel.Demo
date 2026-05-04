@@ -22,6 +22,14 @@ while (true)
     {
         break;
     }
+
+    if (input.Equals("/today", StringComparison.OrdinalIgnoreCase))
+    {
+        var today = await chat.GetCurrentDateAsync();
+        Console.WriteLine($"System > {today}");
+        continue;
+    }
+
     history.AddUserMessage(input);
     var response = await chat.ReplyAsync(history);
     history.AddAssistantMessage(response);
