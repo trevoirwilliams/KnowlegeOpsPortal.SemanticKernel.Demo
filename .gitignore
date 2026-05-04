@@ -355,3 +355,4 @@ $RECYCLE.BIN/
 !Directory.Packages.props
 !Directory.Build.props
 !Directory.Build.targets
+KnowledgeOps.Web/obj/project.nuget.cache
