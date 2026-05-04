@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "type": "completion",
+  "description": "Creates a structured operations brief from internal request details.",
+  "input_variables": [
+    {
+      "name": "requestDetails",
+      "description": "The internal request details that need to be reviewed and turned into an operations brief.",
+      "is_required": true
+    }
+  ],
+  "execution_settings": {
+    "default": {
+      "max_tokens": 900,
+      "temperature": 0.2
+    }
+  }
+}

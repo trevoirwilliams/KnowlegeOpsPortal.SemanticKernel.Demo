@@ -356,3 +356,7 @@ $RECYCLE.BIN/
 !Directory.Build.props
 !Directory.Build.targets
 KnowledgeOps.Web/obj/project.nuget.cache
+KnowledgeOps.Console/obj/KnowledgeOps.Console.csproj.nuget.dgspec.json
+KnowledgeOps.Console/obj/KnowledgeOps.Console.csproj.nuget.dgspec.json
+KnowledgeOps.Console/obj/project.assets.json
+KnowledgeOps.Console/obj/project.nuget.cache

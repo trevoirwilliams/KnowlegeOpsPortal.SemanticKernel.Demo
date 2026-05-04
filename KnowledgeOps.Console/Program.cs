@@ -74,6 +74,20 @@ while (true)
         continue;
     }
 
+    if (input.Equals("/brief", StringComparison.OrdinalIgnoreCase))
+    {
+        var requestDetails = """
+        A department submitted a software access request for a new contractor who starts tomorrow morning.
+        The request says the contractor needs access to the document management system and the finance reporting dashboard.
+        The manager's approval is attached, but the request does not say whether the contractor should have read-only access or editing permissions.
+        """;
+
+        var brief = await chat.CreateOperationsBriefAsync(requestDetails);
+
+        Console.WriteLine($"Assistant > {brief}");
+        continue;
+    }
+
     history.AddUserMessage(input);
     var response = await chat.ReplyAsync(history);
     history.AddAssistantMessage(response);

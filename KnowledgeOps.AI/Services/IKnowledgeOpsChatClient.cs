@@ -16,6 +16,9 @@ public interface IKnowledgeOpsChatClient
     string requestDetails,
     string audience,
     CancellationToken cancellationToken = default);
+    Task<string> CreateOperationsBriefAsync(
+    string requestDetails,
+    CancellationToken cancellationToken = default);
 }
 
 internal sealed class KnowledgeOpsChatClient(
@@ -68,6 +71,24 @@ internal sealed class KnowledgeOpsChatClient(
 
         var result = await kernel.InvokePromptAsync(
             KnowledgeOpsPromptTemplates.RequestSummary,
+            arguments,
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+    public async Task<string> CreateOperationsBriefAsync(
+    string requestDetails,
+    CancellationToken cancellationToken = default)
+    {
+        var arguments = new KernelArguments
+        {
+            ["requestDetails"] = requestDetails
+        };
+
+        var result = await kernel.InvokeAsync(
+            "RequestOperations",
+            "CreateOperationsBrief",
             arguments,
             cancellationToken: cancellationToken);
 
