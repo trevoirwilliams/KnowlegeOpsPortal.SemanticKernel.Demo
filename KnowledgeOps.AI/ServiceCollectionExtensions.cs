@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Plugins.Core;
+
 namespace KnowledgeOps.AI;
 
 public static class ServiceCollectionExtensions
@@ -31,7 +33,21 @@ public static class ServiceCollectionExtensions
                 options.Endpoint,
                 options.ApiKey);
 
-            return builder.Build();
+            builder.Plugins.AddFromType<TimePlugin>("Time");
+            builder.Plugins.AddFromType<ConversationSummaryPlugin>("Summarization");
+
+            var kernel = builder.Build();
+
+            var requestOperationsPluginPath = Path.Combine(
+                AppContext.BaseDirectory,
+                "Plugins",
+                "RequestOperationsPlugin");
+
+            kernel.ImportPluginFromPromptDirectory(
+                requestOperationsPluginPath,
+                "RequestOperations");
+
+            return kernel;
         });
 
         services.AddSingleton(sp =>
