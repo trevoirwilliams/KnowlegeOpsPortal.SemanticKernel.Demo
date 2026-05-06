@@ -88,6 +88,32 @@ while (true)
         continue;
     }
 
+    if (input.StartsWith("/request ", StringComparison.OrdinalIgnoreCase))
+    {
+        var requestId = Console.ReadLine()?.Trim();
+
+        if (string.IsNullOrWhiteSpace(requestId))
+        {
+            Console.WriteLine("Assistant > Enter a request ID. Example: /request REQ-1001");
+            continue;
+        }
+
+        var request = await chat.GetBusinessRequestAsync(requestId);
+
+        Console.WriteLine($"Assistant > {request}");
+
+        continue;
+    }
+
+    if (input.Equals("/requests", StringComparison.OrdinalIgnoreCase))
+    {
+        var requests = await chat.GetOpenBusinessRequestsAsync();
+
+        Console.WriteLine($"Assistant > {requests}");
+
+        continue;
+    }
+
     history.AddUserMessage(input);
     var response = await chat.ReplyAsync(history);
     history.AddAssistantMessage(response);
