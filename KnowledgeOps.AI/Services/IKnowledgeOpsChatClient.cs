@@ -19,6 +19,15 @@ public interface IKnowledgeOpsChatClient
     Task<string> CreateOperationsBriefAsync(
     string requestDetails,
     CancellationToken cancellationToken = default);
+    Task<string> CreateRequestBriefFromPluginAsync(
+    string requestId,
+    CancellationToken cancellationToken = default);
+    Task<string> GetBusinessRequestAsync(
+        string requestId,
+        CancellationToken cancellationToken = default);
+
+    Task<string> GetOpenBusinessRequestsAsync(
+        CancellationToken cancellationToken = default);
 }
 
 internal sealed class KnowledgeOpsChatClient(
@@ -90,6 +99,53 @@ internal sealed class KnowledgeOpsChatClient(
             "RequestOperations",
             "CreateOperationsBrief",
             arguments,
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+    public async Task<string> CreateRequestBriefFromPluginAsync(
+    string requestId,
+    CancellationToken cancellationToken = default)
+    {
+        var arguments = new KernelArguments
+        {
+            ["requestId"] = requestId
+        };
+
+        var result = await kernel.InvokePromptAsync(
+            KnowledgeOpsPromptTemplates.RequestBriefFromPlugin,
+            arguments,
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+    public async Task<string> GetBusinessRequestAsync(
+    string requestId,
+    CancellationToken cancellationToken = default)
+    {
+        var arguments = new KernelArguments
+        {
+            ["requestId"] = requestId
+        };
+
+        var result = await kernel.InvokeAsync(
+            "BusinessRequests",
+            "get_request_by_id",
+            arguments,
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+
+    public async Task<string> GetOpenBusinessRequestsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var result = await kernel.InvokeAsync(
+            "BusinessRequests",
+            "get_open_business_requests",
             cancellationToken: cancellationToken);
 
         return result.ToString();

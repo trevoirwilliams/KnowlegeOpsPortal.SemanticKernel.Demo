@@ -37,7 +37,38 @@ public static class KnowledgeOpsPromptTemplates
     - Priority level
     """;
 
-    public static ChatHistory CreateOperationsAssistantHistory()
+    public const string RequestBriefFromPlugin = """
+        You are a KnowledgeOps operations assistant.
+
+        You will receive request data from a registered business plugin.
+
+        Request ID:
+        {{$requestId}}
+
+        Business request data:
+        {{BusinessRequests.get_request_by_id $requestId}}
+
+        Prepare an operations brief for an operations analyst.
+
+        Return the response using this structure:
+
+        - Request summary
+        - Current status
+        - Business justification
+        - Risk and urgency
+        - Missing information
+        - Recommended next step
+        - Human review note
+
+        Rules:
+        - Use only the business request data provided by the plugin.
+        - Do not invent missing facts.
+        - If the request was not found, say that no matching request was found and ask the user to verify the request ID.
+        - Do not approve, reject, or modify the request.
+        - Keep the response concise and practical.
+        """;
+
+public static ChatHistory CreateOperationsAssistantHistory()
     {
         var history = new ChatHistory();
 
