@@ -19,7 +19,9 @@ public interface IKnowledgeOpsChatClient
     Task<string> CreateOperationsBriefAsync(
     string requestDetails,
     CancellationToken cancellationToken = default);
-
+    Task<string> CreateRequestBriefFromPluginAsync(
+    string requestId,
+    CancellationToken cancellationToken = default);
     Task<string> GetBusinessRequestAsync(
         string requestId,
         CancellationToken cancellationToken = default);
@@ -96,6 +98,23 @@ internal sealed class KnowledgeOpsChatClient(
         var result = await kernel.InvokeAsync(
             "RequestOperations",
             "CreateOperationsBrief",
+            arguments,
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+    public async Task<string> CreateRequestBriefFromPluginAsync(
+    string requestId,
+    CancellationToken cancellationToken = default)
+    {
+        var arguments = new KernelArguments
+        {
+            ["requestId"] = requestId
+        };
+
+        var result = await kernel.InvokePromptAsync(
+            KnowledgeOpsPromptTemplates.RequestBriefFromPlugin,
             arguments,
             cancellationToken: cancellationToken);
 
