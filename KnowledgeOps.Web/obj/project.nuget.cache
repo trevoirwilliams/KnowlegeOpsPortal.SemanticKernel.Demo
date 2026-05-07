@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0mu7J2ctzNU=",
+  "dgSpecHash": "GnQFomQp3+s=",
   "success": true,
   "projectFilePath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.connectors.azureopenai\\1.75.0\\microsoft.semantickernel.connectors.azureopenai.1.75.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.connectors.openai\\1.75.0\\microsoft.semantickernel.connectors.openai.1.75.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.core\\1.75.0\\microsoft.semantickernel.core.1.75.0.nupkg.sha512",
+    "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.plugins.core\\1.75.0-preview\\microsoft.semantickernel.plugins.core.1.75.0-preview.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\openai\\2.10.0\\openai.2.10.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\system.clientmodel\\1.10.0\\system.clientmodel.1.10.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\system.memory.data\\10.0.3\\system.memory.data.10.0.3.nupkg.sha512",

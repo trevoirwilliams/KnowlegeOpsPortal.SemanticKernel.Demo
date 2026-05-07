@@ -4,6 +4,13 @@
     <ProjectReference Include="..\KnowledgeOps.AI\KnowledgeOps.AI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Copilot\" />
+    <Folder Include="Models\Documents\" />
+    <Folder Include="Models\Requests\" />
+    <Folder Include="Views\Documents\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>

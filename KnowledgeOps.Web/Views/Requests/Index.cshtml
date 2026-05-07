@@ -1,0 +1,108 @@
+﻿@using KnowledgeOps.AI.Models
+@model IReadOnlyList<KnowledgeOps.Web.Models.Requests.RequestListItemViewModel>
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h1 class="mb-1">Requests</h1>
+        <p class="text-muted mb-0">
+            Review open business requests that can later be triaged and summarized with AI assistance.
+        </p>
+    </div>
+    <span class="badge text-bg-primary">Workflow Queue</span>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Request</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Impact</th>
+                    <th>Urgency</th>
+                    <th>Required By</th>
+                    <th>Assigned To</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var request in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="fw-semibold">@request.Title</div>
+                            <div class="text-muted small">
+                                @request.Id · Requested by @request.RequestedBy
+                            </div>
+                        </td>
+                        <td>@request.Department</td>
+                        <td>
+                            <span class="badge @GetStatusClass(request.Status)">
+                                @FormatStatus(request.Status)
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge @GetImpactClass(request.Impact)">
+                                @request.Impact
+                            </span>
+                        </td>
+                        <td>@request.Urgency</td>
+                        <td>@request.RequiredByUtc.ToLocalTime().ToString("MMM d, yyyy")</td>
+                        <td>@(request.AssignedTo ?? "Unassigned")</td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-primary btn-sm"
+                               asp-controller="Requests"
+                               asp-action="Details"
+                               asp-route-id="@request.Id">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    private static string FormatStatus(BusinessRequestStatus status)
+    {
+        return status switch
+        {
+            BusinessRequestStatus.InReview => "In Review",
+            BusinessRequestStatus.WaitingForInformation => "Waiting for Information",
+            _ => status.ToString()
+        };
+    }
+
+    private static string GetStatusClass(BusinessRequestStatus status)
+    {
+        return status switch
+        {
+            BusinessRequestStatus.New => "text-bg-info",
+            BusinessRequestStatus.InReview => "text-bg-primary",
+            BusinessRequestStatus.WaitingForInformation => "text-bg-warning",
+            BusinessRequestStatus.Approved => "text-bg-success",
+            BusinessRequestStatus.Rejected => "text-bg-danger",
+            BusinessRequestStatus.Completed => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+
+    private static string GetImpactClass(BusinessRequestImpact impact)
+    {
+        return impact switch
+        {
+            BusinessRequestImpact.Critical => "text-bg-danger",
+            BusinessRequestImpact.High => "text-bg-warning",
+            BusinessRequestImpact.Medium => "text-bg-info",
+            BusinessRequestImpact.Low => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+}

@@ -212,6 +212,22 @@
           }
         }
       },
+      "Microsoft.SemanticKernel.Plugins.Core/1.75.0-preview": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Core": "1.75.0"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "OpenAI/2.10.0": {
         "type": "package",
         "dependencies": {
@@ -287,7 +303,8 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "Microsoft.SemanticKernel": "1.75.0",
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
+          "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
         },
         "compile": {
           "bin/placeholder/KnowledgeOps.AI.dll": {}
@@ -581,6 +598,25 @@
         "microsoft.semantickernel.core.nuspec"
       ]
     },
+    "Microsoft.SemanticKernel.Plugins.Core/1.75.0-preview": {
+      "sha512": "v82oozJ7uUg5eqXzGaXw9C85RzXtOLzj9YqdpdkhYrnxH0VDOEeLG/ZsgIh8ddhreRhtBAE77V3tgqWoXhxucw==",
+      "type": "package",
+      "path": "microsoft.semantickernel.plugins.core/1.75.0-preview",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "microsoft.semantickernel.plugins.core.1.75.0-preview.nupkg.sha512",
+        "microsoft.semantickernel.plugins.core.nuspec"
+      ]
+    },
     "OpenAI/2.10.0": {
       "sha512": "e5gAhMDcX5bFmmtR+lT6qZxJoaGb0SkIplPUUdKwcC4xerCh471hTIsrvfkou7scfZD9YQk6C06dP3NwBqHw1A==",
       "type": "package",
@@ -763,7 +799,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.7",
           "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
           "Microsoft.SemanticKernel": "1.75.0",
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
+          "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
         },
         "imports": [
           "net461",

@@ -16,7 +16,7 @@ public sealed class BusinessRequest
 
     public required BusinessRequestStatus Status { get; init; }
 
-    public required string Impact { get; init; }
+    public required BusinessRequestImpact Impact { get; init; }
 
     public required string Urgency { get; init; }
 
