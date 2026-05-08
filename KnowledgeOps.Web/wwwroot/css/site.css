@@ -29,3 +29,114 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.portal-assistant-launcher {
+    align-items: center;
+    border: 0;
+    border-radius: 999px;
+    bottom: 1.5rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
+    display: flex;
+    font-size: 1.5rem;
+    height: 3.5rem;
+    justify-content: center;
+    position: fixed;
+    right: 1.5rem;
+    width: 3.5rem;
+    z-index: 1050;
+}
+
+.portal-assistant {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    bottom: 5.5rem;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    max-height: min(42rem, calc(100vh - 7rem));
+    overflow: hidden;
+    position: fixed;
+    right: 1.5rem;
+    width: min(26rem, calc(100vw - 2rem));
+    z-index: 1050;
+}
+
+.portal-assistant-header {
+    align-items: center;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.portal-assistant-context {
+    background: #eef5ff;
+    border-bottom: 1px solid #b6d4fe;
+    color: #084298;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+.portal-assistant-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.portal-assistant-empty {
+    border: 1px dashed #ced4da;
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.portal-assistant-message {
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+}
+
+.portal-assistant-message-user {
+    background: #e7f1ff;
+    border: 1px solid #b6d4fe;
+    margin-left: 2rem;
+}
+
+.portal-assistant-message-assistant {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    margin-right: 2rem;
+}
+
+.portal-assistant-message-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.portal-assistant-message-body {
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+.portal-assistant-form {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+@media (max-width: 576px) {
+    .portal-assistant {
+        bottom: 0;
+        border-radius: 1rem 1rem 0 0;
+        left: 0;
+        max-height: 85vh;
+        right: 0;
+        width: 100%;
+    }
+
+    .portal-assistant-launcher {
+        bottom: 1rem;
+        right: 1rem;
+    }
+}

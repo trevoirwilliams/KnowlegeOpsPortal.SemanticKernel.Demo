@@ -1,0 +1,7 @@
+﻿@using System.Text.Json
+@using KnowledgeOps.Web.Models.Copilot
+@model CopilotPageContext
+
+<script type="application/json" id="assistant-page-context">
+    @Html.Raw(JsonSerializer.Serialize(Model))
+</script>

@@ -492,6 +492,30 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
+      "Microsoft.Extensions.Http/10.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.2",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.2",
+          "Microsoft.Extensions.Diagnostics": "10.0.2",
+          "Microsoft.Extensions.Logging": "10.0.2",
+          "Microsoft.Extensions.Logging.Abstractions": "10.0.2",
+          "Microsoft.Extensions.Options": "10.0.2"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.Extensions.Http.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Http.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
       "Microsoft.Extensions.Logging/10.0.7": {
         "type": "package",
         "dependencies": {
@@ -832,6 +856,23 @@
           }
         }
       },
+      "Microsoft.SemanticKernel.Plugins.Core/1.75.0-preview": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Http": "10.0.2",
+          "Microsoft.SemanticKernel.Core": "1.75.0"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "OpenAI/2.10.0": {
         "type": "package",
         "dependencies": {
@@ -939,7 +980,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.7",
           "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
           "Microsoft.SemanticKernel": "1.75.0",
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
+          "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
         },
         "compile": {
           "bin/placeholder/KnowledgeOps.AI.dll": {}
@@ -1660,6 +1702,35 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Microsoft.Extensions.Http/10.0.2": {
+      "sha512": "egUPC0xydb1ugCMcRyJ6zaOGOzx7N4coOVlGeLcIsXhUf1xHHwZeX+ob7JuG0dXExFduHYE/t+4/4y8BLlBKmw==",
+      "type": "package",
+      "path": "microsoft.extensions.http/10.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.Http.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Http.targets",
+        "lib/net10.0/Microsoft.Extensions.Http.dll",
+        "lib/net10.0/Microsoft.Extensions.Http.xml",
+        "lib/net462/Microsoft.Extensions.Http.dll",
+        "lib/net462/Microsoft.Extensions.Http.xml",
+        "lib/net8.0/Microsoft.Extensions.Http.dll",
+        "lib/net8.0/Microsoft.Extensions.Http.xml",
+        "lib/net9.0/Microsoft.Extensions.Http.dll",
+        "lib/net9.0/Microsoft.Extensions.Http.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.Http.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Http.xml",
+        "microsoft.extensions.http.10.0.2.nupkg.sha512",
+        "microsoft.extensions.http.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Microsoft.Extensions.Logging/10.0.7": {
       "sha512": "hOeRIQ63GkgiYCB/MIFp+LQs8aXpJXpB55t6Aj37ab7t2/6WeFcPXxYM9hdy/o5tffzwf8mhqzLJP6mjGYCxjw==",
       "type": "package",
@@ -2158,6 +2229,25 @@
         "microsoft.semantickernel.core.nuspec"
       ]
     },
+    "Microsoft.SemanticKernel.Plugins.Core/1.75.0-preview": {
+      "sha512": "v82oozJ7uUg5eqXzGaXw9C85RzXtOLzj9YqdpdkhYrnxH0VDOEeLG/ZsgIh8ddhreRhtBAE77V3tgqWoXhxucw==",
+      "type": "package",
+      "path": "microsoft.semantickernel.plugins.core/1.75.0-preview",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "icon.png",
+        "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/net10.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Plugins.Core.xml",
+        "microsoft.semantickernel.plugins.core.1.75.0-preview.nupkg.sha512",
+        "microsoft.semantickernel.plugins.core.nuspec"
+      ]
+    },
     "OpenAI/2.10.0": {
       "sha512": "e5gAhMDcX5bFmmtR+lT6qZxJoaGb0SkIplPUUdKwcC4xerCh471hTIsrvfkou7scfZD9YQk6C06dP3NwBqHw1A==",
       "type": "package",
@@ -2386,7 +2476,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.7",
           "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
           "Microsoft.SemanticKernel": "1.75.0",
-          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0"
+          "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
+          "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
         },
         "imports": [
           "net461",
