@@ -1,10 +1,11 @@
 using System;
 using KnowledgeOps.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgeOps.Domain.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options){
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options){
     public DbSet<CopilotConversation> CopilotConversations => Set<CopilotConversation>();
 
     public DbSet<CopilotMessage> CopilotMessages => Set<CopilotMessage>();

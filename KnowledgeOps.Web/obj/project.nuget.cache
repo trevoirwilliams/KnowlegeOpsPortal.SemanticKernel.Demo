@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "/dNY0UQn4ww=",
+  "dgSpecHash": "z/G1CHKBEfY=",
   "success": false,
   "projectFilePath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Trevoir\\.nuget\\packages\\azure.ai.openai\\2.9.0-beta.1\\azure.ai.openai.2.9.0-beta.1.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\azure.core\\1.51.1\\azure.core.1.51.1.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.7\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.7.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\10.0.2\\microsoft.bcl.asyncinterfaces.10.0.2.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
