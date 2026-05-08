@@ -1,10 +1,18 @@
 using KnowledgeOps.AI;
-using KnowledgeOps.AI.Repositories;
+using KnowledgeOps.Domain.Data;
+using KnowledgeOps.Domain.Repositories;
 using KnowledgeOps.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 builder.Services.AddScoped<ICopilotService, CopilotService>();

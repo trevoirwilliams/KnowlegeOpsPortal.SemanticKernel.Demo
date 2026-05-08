@@ -1,7 +1,7 @@
 using System;
 using KnowledgeOps.AI.Plugins;
-using KnowledgeOps.AI.Repositories;
 using KnowledgeOps.AI.Services;
+using KnowledgeOps.Domain.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -1,7 +1,7 @@
 using System;
-using KnowledgeOps.AI.Models;
+using KnowledgeOps.Domain.Models;
 
-namespace KnowledgeOps.AI.Repositories;
+namespace KnowledgeOps.Domain.Repositories;
 
 public interface IDocumentRepository
 {

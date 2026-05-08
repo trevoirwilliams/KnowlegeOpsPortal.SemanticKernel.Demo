@@ -1,6 +1,6 @@
 using System;
 
-namespace KnowledgeOps.AI.Models;
+namespace KnowledgeOps.Domain.Models;
 
 public sealed class KnowledgeDocument
 {
