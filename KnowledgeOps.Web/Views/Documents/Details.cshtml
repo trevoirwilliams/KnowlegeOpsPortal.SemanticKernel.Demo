@@ -1,0 +1,104 @@
+﻿@using KnowledgeOps.AI.Models
+@using KnowledgeOps.Web.Models.Copilot
+@model KnowledgeOps.Web.Models.Documents.DocumentDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="mb-4">
+    <a class="text-decoration-none"
+       asp-controller="Documents"
+       asp-action="Index">
+        &larr; Back to Documents
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                    <div>
+                        <p class="text-muted small mb-1">@Model.Id</p>
+                        <h1 class="h3 mb-0">@Model.Title</h1>
+                    </div>
+                    <span class="badge @GetStatusClass(Model.Status)">
+                        @GetStatusLabel(Model.Status)
+                    </span>
+                </div>
+
+                <p class="lead">@Model.Summary</p>
+
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-3">Category</dt>
+                    <dd class="col-sm-9">@Model.Category</dd>
+
+                    <dt class="col-sm-3">Department</dt>
+                    <dd class="col-sm-9">@Model.Department</dd>
+
+                    <dt class="col-sm-3">Owner</dt>
+                    <dd class="col-sm-9">@Model.Owner</dd>
+
+                    <dt class="col-sm-3">Last Reviewed</dt>
+                    <dd class="col-sm-9">@Model.LastReviewedOn.ToString("MMMM d, yyyy")</dd>
+                </dl>
+
+                <div class="mt-4">
+                    <h2 class="h6">Tags</h2>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <span class="badge text-bg-light border">@tag</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var assistantContext = new CopilotPageContext
+    {
+        Area = "Documents",
+        PageTitle = Model.Title,
+        EntityType = "Document",
+        EntityId = Model.Id,
+        Summary = Model.Summary,
+        Metadata = new Dictionary<string, string>
+        {
+            ["Category"] = Model.Category,
+            ["Department"] = Model.Department,
+            ["Owner"] = Model.Owner,
+            ["Status"] = GetStatusLabel(Model.Status),
+            ["LastReviewedOn"] = Model.LastReviewedOn.ToString("yyyy-MM-dd"),
+            ["Tags"] = string.Join(", ", Model.Tags)
+        }
+    };
+}
+<partial name="_AssistantContext" model="assistantContext" />
+   
+@functions {
+    private static string GetStatusClass(KnowledgeDocumentStatus status)
+    {
+        return status switch
+        {
+            KnowledgeDocumentStatus.Approved => "text-bg-success",
+            KnowledgeDocumentStatus.NeedsReview => "text-bg-warning",
+            KnowledgeDocumentStatus.Draft => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+
+    private static string GetStatusLabel(KnowledgeDocumentStatus status)
+    {
+        return status switch
+        {
+            KnowledgeDocumentStatus.NeedsReview => "Needs Review",
+            _ => status.ToString()
+        };
+    }
+}

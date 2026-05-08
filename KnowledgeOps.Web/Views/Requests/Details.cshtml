@@ -1,0 +1,165 @@
+﻿@using KnowledgeOps.AI.Models
+@using KnowledgeOps.Web.Models.Copilot
+@model KnowledgeOps.Web.Models.Requests.RequestDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="mb-4">
+    <a class="text-decoration-none"
+       asp-controller="Requests"
+       asp-action="Index">
+        &larr; Back to Requests
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                    <div>
+                        <p class="text-muted small mb-1">@Model.Id</p>
+                        <h1 class="h3 mb-0">@Model.Title</h1>
+                    </div>
+                    <span class="badge @GetStatusClass(Model.Status)">
+                        @FormatStatus(Model.Status)
+                    </span>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="h5">Request Description</h2>
+                    <p class="mb-0">@Model.Description</p>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="h5">Business Justification</h2>
+                    <p class="mb-0">@Model.BusinessJustification</p>
+                </div>
+
+                <hr />
+
+                <dl class="row">
+                    <dt class="col-sm-4">Department</dt>
+                    <dd class="col-sm-8">@Model.Department</dd>
+
+                    <dt class="col-sm-4">Requested By</dt>
+                    <dd class="col-sm-8">@Model.RequestedBy</dd>
+
+                    <dt class="col-sm-4">Assigned To</dt>
+                    <dd class="col-sm-8">@(Model.AssignedTo ?? "Unassigned")</dd>
+
+                    <dt class="col-sm-4">Submitted</dt>
+                    <dd class="col-sm-8">@Model.SubmittedOnUtc.ToLocalTime().ToString("MMMM d, yyyy")</dd>
+
+                    <dt class="col-sm-4">Required By</dt>
+                    <dd class="col-sm-8">@Model.RequiredByUtc.ToLocalTime().ToString("MMMM d, yyyy")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5">Priority Signals</h2>
+
+                <dl class="mb-0">
+                    <dt>Impact</dt>
+                    <dd>
+                        <span class="badge @GetImpactClass(Model.Impact)">
+                            @Model.Impact
+                        </span>
+                    </dd>
+
+                    <dt>Urgency</dt>
+                    <dd>@Model.Urgency</dd>
+
+                    <dt>Status</dt>
+                    <dd>@FormatStatus(Model.Status)</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card border-primary shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Copilot Context Preview</h2>
+                <p class="text-muted">
+                    This request page will later pass workflow context into the embedded copilot.
+                </p>
+
+                <ul class="small mb-0">
+                    <li>Entity Type: Business Request</li>
+                    <li>Entity ID: @Model.Id</li>
+                    <li>Department: @Model.Department</li>
+                    <li>Impact: @Model.Impact</li>
+                    <li>Urgency: @Model.Urgency</li>
+                    <li>Status: @FormatStatus(Model.Status)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var assistantContext = new CopilotPageContext
+    {
+        Area = "Requests",
+        PageTitle = Model.Title,
+        EntityType = "Business Request",
+        EntityId = Model.Id,
+        Summary = Model.Description,
+        Metadata = new Dictionary<string, string>
+        {
+            ["Department"] = Model.Department,
+            ["RequestedBy"] = Model.RequestedBy,
+            ["AssignedTo"] = Model.AssignedTo ?? "Unassigned",
+            ["Status"] = FormatStatus(Model.Status),
+            ["Impact"] = Model.Impact.ToString(),
+            ["Urgency"] = Model.Urgency,
+            ["SubmittedOnUtc"] = Model.SubmittedOnUtc.ToString("O"),
+            ["RequiredByUtc"] = Model.RequiredByUtc.ToString("O"),
+            ["BusinessJustification"] = Model.BusinessJustification
+        }
+    };
+}
+<partial name="_AssistantContext" model="assistantContext" />
+
+@functions {
+    private static string FormatStatus(BusinessRequestStatus status)
+    {
+        return status switch
+        {
+            BusinessRequestStatus.InReview => "In Review",
+            BusinessRequestStatus.WaitingForInformation => "Waiting for Information",
+            _ => status.ToString()
+        };
+    }
+
+    private static string GetStatusClass(BusinessRequestStatus status)
+    {
+        return status switch
+        {
+            BusinessRequestStatus.New => "text-bg-info",
+            BusinessRequestStatus.InReview => "text-bg-primary",
+            BusinessRequestStatus.WaitingForInformation => "text-bg-warning",
+            BusinessRequestStatus.Approved => "text-bg-success",
+            BusinessRequestStatus.Rejected => "text-bg-danger",
+            BusinessRequestStatus.Completed => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+
+    private static string GetImpactClass(BusinessRequestImpact impact)
+    {
+        return impact switch
+        {
+            BusinessRequestImpact.Critical => "text-bg-danger",
+            BusinessRequestImpact.High => "text-bg-warning",
+            BusinessRequestImpact.Medium => "text-bg-info",
+            BusinessRequestImpact.Low => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+}

@@ -1,5 +1,6 @@
 using System;
 using KnowledgeOps.AI.Plugins;
+using KnowledgeOps.AI.Repositories;
 using KnowledgeOps.AI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,7 @@ public static class ServiceCollectionExtensions
                 options.ApiKey);
 
             builder.Services.AddSingleton<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
-
+            builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 
             builder.Plugins.AddFromType<TimePlugin>("Time");
             builder.Plugins.AddFromType<ConversationSummaryPlugin>("Summarization");

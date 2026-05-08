@@ -1,0 +1,80 @@
+﻿@using KnowledgeOps.AI.Models
+@model IReadOnlyList<KnowledgeOps.Web.Models.Documents.DocumentListItemViewModel>
+
+@{
+    ViewData["Title"] = "Documents";
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h1 class="mb-1">Documents</h1>
+        <p class="text-muted mb-0">
+            Review managed business documents that can later be used for grounded AI assistance.
+        </p>
+    </div>
+    <span class="badge text-bg-primary">Knowledge Base</span>
+</div>
+
+<div class="row g-4">
+    @foreach (KnowledgeOps.Web.Models.Documents.DocumentListItemViewModel document in Model)
+    {
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div>
+                            <h2 class="h5 mb-1">@document.Title</h2>
+                            <p class="text-muted small mb-2">@document.Id</p>
+                        </div>
+                        <span class="badge @GetStatusClass(document.Status)">
+                            @GetStatusLabel(document.Status)
+                        </span>
+                    </div>
+
+                    <p class="mb-3">@document.Summary</p>
+
+                    <dl class="row small mb-0">
+                        <dt class="col-sm-4">Category</dt>
+                        <dd class="col-sm-8">@document.Category</dd>
+
+                        <dt class="col-sm-4">Department</dt>
+                        <dd class="col-sm-8">@document.Department</dd>
+
+                        <dt class="col-sm-4">Reviewed</dt>
+                        <dd class="col-sm-8">@document.LastReviewedOn.ToString("MMM d, yyyy")</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a class="btn btn-outline-primary btn-sm"
+                       asp-controller="Documents"
+                       asp-action="Details"
+                       asp-route-id="@document.Id">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    private static string GetStatusClass(KnowledgeDocumentStatus status)
+    {
+        return status switch
+        {
+            KnowledgeDocumentStatus.Approved => "text-bg-success",
+            KnowledgeDocumentStatus.NeedsReview => "text-bg-warning",
+            KnowledgeDocumentStatus.Draft => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+    }
+
+    private static string GetStatusLabel(KnowledgeDocumentStatus status)
+    {
+        return status switch
+        {
+            KnowledgeDocumentStatus.NeedsReview => "Needs Review",
+            _ => status.ToString()
+        };
+    }
+}

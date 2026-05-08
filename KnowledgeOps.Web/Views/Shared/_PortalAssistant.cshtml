@@ -1,0 +1,86 @@
+﻿@using KnowledgeOps.Web.Models.Copilot
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@model CopilotPanelViewModel
+
+@{
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+}
+
+<button type="button"
+        class="portal-assistant-launcher"
+        data-assistant-toggle
+        aria-label="Open KnowledgeOps Assistant"
+        aria-expanded="false">
+    <span aria-hidden="true">💬</span>
+</button>
+
+<section class="portal-assistant d-none"
+         data-assistant
+         data-endpoint="@Url.Action("Message", "Copilot")"
+         aria-label="@Model.Title">
+    <header class="portal-assistant-header">
+        <div>
+            <h2 class="h6 mb-0">@Model.Title</h2>
+            <p class="small mb-0">@Model.Subtitle</p>
+        </div>
+
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-assistant-close
+                aria-label="Close assistant"></button>
+    </header>
+
+    <div class="portal-assistant-context d-none"
+         data-assistant-context-label>
+    </div>
+
+    <div class="portal-assistant-messages"
+         data-assistant-messages
+         aria-live="polite">
+        <div class="portal-assistant-empty">
+            <p class="fw-semibold mb-1">How can I help?</p>
+            <p class="small text-muted mb-3">
+                Ask a question about the portal, or use one of the starter prompts.
+            </p>
+
+            <div class="d-grid gap-2">
+                @foreach (var prompt in Model.SuggestedPrompts)
+                {
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-sm text-start"
+                            data-assistant-suggestion="@prompt">
+                        @prompt
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <form class="portal-assistant-form" data-assistant-form>
+        <input type="hidden"
+               name="__RequestVerificationToken"
+               value="@tokens.RequestToken" />
+
+        <label class="visually-hidden" for="assistant-message">
+            Message
+        </label>
+
+        <textarea id="assistant-message"
+                  class="form-control"
+                  rows="3"
+                  maxlength="2000"
+                  required
+                  data-assistant-input
+                  placeholder="@Model.Placeholder"></textarea>
+
+        <div class="d-flex align-items-center justify-content-between gap-2 mt-2">
+            <span class="small text-muted" data-assistant-status></span>
+
+            <button type="submit"
+                    class="btn btn-primary btn-sm"
+                    data-assistant-submit>
+                Send
+            </button>
+        </div>
+    </form>
+</section>

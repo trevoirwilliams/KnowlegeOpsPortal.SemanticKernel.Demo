@@ -1,8 +1,56 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="p-5 mb-4 bg-light rounded-3 border">
+    <div class="container-fluid py-4">
+        <h1 class="display-5 fw-bold">KnowledgeOps Portal</h1>
+        <p class="col-md-8 fs-5">
+            Manage operational documents, business requests, and AI-assisted workflows
+            from one ASP.NET Core application.
+        </p>
+        <a class="btn btn-primary btn-lg"
+           asp-controller="Documents"
+           asp-action="Index">
+            Review Documents
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Documents</h2>
+                <p class="text-muted mb-0">
+                    Browse managed business documents that will later support extraction,
+                    retrieval, and grounded AI responses.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Requests</h2>
+                <p class="text-muted mb-0">
+                    Track business requests and prepare for AI-assisted triage,
+                    summaries, and approval workflows.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Embedded Copilot</h2>
+                <p class="text-muted mb-0">
+                    Add contextual AI assistance directly into the portal experience
+                    instead of building a disconnected chatbot.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>

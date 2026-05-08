@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "COiRN5sO9QU=",
+  "dgSpecHash": "VJU4mzzIgn0=",
   "success": true,
   "projectFilePath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Console\\KnowledgeOps.Console.csproj",
   "expectedPackageFiles": [
@@ -29,6 +29,7 @@
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\10.0.7\\microsoft.extensions.filesystemglobbing.10.0.7.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.hosting\\10.0.7\\microsoft.extensions.hosting.10.0.7.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\10.0.7\\microsoft.extensions.hosting.abstractions.10.0.7.nupkg.sha512",
+    "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.http\\10.0.2\\microsoft.extensions.http.10.0.2.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.logging\\10.0.7\\microsoft.extensions.logging.10.0.7.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.7\\microsoft.extensions.logging.abstractions.10.0.7.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.extensions.logging.configuration\\10.0.7\\microsoft.extensions.logging.configuration.10.0.7.nupkg.sha512",
@@ -46,6 +47,7 @@
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.connectors.azureopenai\\1.75.0\\microsoft.semantickernel.connectors.azureopenai.1.75.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.connectors.openai\\1.75.0\\microsoft.semantickernel.connectors.openai.1.75.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.core\\1.75.0\\microsoft.semantickernel.core.1.75.0.nupkg.sha512",
+    "C:\\Users\\Trevoir\\.nuget\\packages\\microsoft.semantickernel.plugins.core\\1.75.0-preview\\microsoft.semantickernel.plugins.core.1.75.0-preview.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\openai\\2.10.0\\openai.2.10.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\system.clientmodel\\1.10.0\\system.clientmodel.1.10.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\system.diagnostics.eventlog\\10.0.7\\system.diagnostics.eventlog.10.0.7.nupkg.sha512",
