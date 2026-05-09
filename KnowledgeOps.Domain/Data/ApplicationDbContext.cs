@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgeOps.Domain.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options){
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options){
     public DbSet<CopilotConversation> CopilotConversations => Set<CopilotConversation>();
 
     public DbSet<CopilotMessage> CopilotMessages => Set<CopilotMessage>();

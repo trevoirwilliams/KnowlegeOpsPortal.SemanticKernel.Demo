@@ -85,7 +85,7 @@
             },
             "Microsoft.SemanticKernel.Plugins.Core": {
               "target": "Package",
-              "version": "[1.75.0, )",
+              "version": "[1.75.0-preview, )",
               "versionCentrallyManaged": true
             }
           },
@@ -99,7 +99,7 @@
             "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
             "Microsoft.SemanticKernel": "1.75.0",
             "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
-            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0"
+            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
           },
           "imports": [
             "net461",
@@ -480,7 +480,7 @@
             "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
             "Microsoft.SemanticKernel": "1.75.0",
             "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
-            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0"
+            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
           },
           "imports": [
             "net461",
@@ -860,7 +860,7 @@
             "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
             "Microsoft.SemanticKernel": "1.75.0",
             "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
-            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0"
+            "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
           },
           "imports": [
             "net461",

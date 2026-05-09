@@ -1,10 +1,12 @@
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Web.Models.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgeOps.Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager) : Controller
@@ -59,11 +61,10 @@ namespace KnowledgeOps.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var returnUrl = model.ReturnUrl ?? Url.Content("~/");
+            var returnUrl = Url.Content("~/");
 
             if (!ModelState.IsValid)
             {
-                model.ReturnUrl = returnUrl;
                 return View(model);
             }
 
@@ -80,7 +81,6 @@ namespace KnowledgeOps.Web.Controllers
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
-            model.ReturnUrl = returnUrl;
             return View(model);
         }
 
