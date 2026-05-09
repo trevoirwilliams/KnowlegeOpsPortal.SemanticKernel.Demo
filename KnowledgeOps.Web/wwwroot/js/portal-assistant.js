@@ -1,4 +1,5 @@
 (() => {
+    let conversationId = null;
     const assistant = document.querySelector("[data-assistant]");
     const toggleButton = document.querySelector("[data-assistant-toggle]");
 
@@ -75,7 +76,8 @@
                 },
                 body: JSON.stringify({
                     message,
-                    context: pageContext
+                    context: pageContext,
+                    conversationId
                 })
             });
 
@@ -85,6 +87,9 @@
             }
 
             const data = await response.json();
+            if (data.conversationId) {
+                conversationId = data.conversationId;
+            }
             appendMessage("assistant", data.message ?? "The assistant returned an empty response.");
         } catch (error) {
             console.error("Assistant request failed.", error);

@@ -1,4 +1,5 @@
 using KnowledgeOps.AI.Services;
+using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Web.Models.Copilot;
 using Microsoft.SemanticKernel.ChatCompletion;
 
@@ -13,6 +14,8 @@ public interface ICopilotService
 
 public sealed class CopilotService(
     IKnowledgeOpsChatClient chatClient,
+    ICopilotConversationService conversationService,
+    ICurrentUserService currentUserService,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
@@ -27,6 +30,17 @@ public sealed class CopilotService(
                 "A message is required before the copilot can respond.",
                 nameof(request));
         }
+
+        var userId = currentUserService.UserId;
+        var conversation = await conversationService.GetOrCreateConversationAsync(
+            request,
+            userId,
+            cancellationToken);
+        await conversationService.AddMessageAsync(
+            conversation.Id,
+            CopilotMessageRole.User,
+            request.Message,
+            cancellationToken);
 
         var history = new ChatHistory();
 
@@ -46,6 +60,16 @@ public sealed class CopilotService(
             request.Context?.EntityId);
 
         var response = await chatClient.ReplyAsync(history, cancellationToken);
+
+        var assistantMessage = string.IsNullOrWhiteSpace(response)
+        ? "I could not generate a response for that request."
+        : response;
+
+        await conversationService.AddMessageAsync(
+        conversation.Id,
+        CopilotMessageRole.Assistant,
+        assistantMessage,
+        cancellationToken);
 
         return new CopilotResponse
         {

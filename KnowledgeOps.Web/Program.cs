@@ -42,7 +42,11 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICopilotService, CopilotService>();
+builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
+
 builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 

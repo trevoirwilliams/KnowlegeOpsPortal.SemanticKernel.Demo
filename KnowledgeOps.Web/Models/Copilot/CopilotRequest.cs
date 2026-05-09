@@ -10,4 +10,6 @@ public sealed class CopilotRequest
     public string Message { get; init; } = string.Empty;
 
     public CopilotPageContext? Context { get; init; }
+
+    public int? ConversationId { get; init; }
 }
