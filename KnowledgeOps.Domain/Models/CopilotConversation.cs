@@ -12,6 +12,12 @@ public class CopilotConversation
 
     public string? Title { get; set; }
 
+    public string? Summary { get; set; }
+
+    public DateTime? SummarizedUtc { get; set; }
+
+    public int? SummarizedThroughSequenceNumber { get; set; }
+    
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;

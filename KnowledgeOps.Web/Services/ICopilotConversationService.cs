@@ -18,6 +18,12 @@ public interface ICopilotConversationService
         CopilotMessageRole role,
         string content,
         CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<CopilotMessage>> GetMessagesForModelAsync(
+        int conversationId,
+        string? userId,
+        int maxMessages,
+        int summarizedThroughSequenceNumber,
+        CancellationToken cancellationToken = default);
 }
 
 public class CopilotConversationService(
@@ -103,6 +109,30 @@ public class CopilotConversationService(
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return conversation;
+    }
+
+    public async Task<IReadOnlyList<CopilotMessage>> GetMessagesForModelAsync(int conversationId, string? userId, int maxMessages, int summarizedThroughSequenceNumber, CancellationToken cancellationToken = default)
+    {
+        var conversationExists = await dbContext.CopilotConversations
+            .AnyAsync(
+                conversation =>
+                    conversation.Id == conversationId &&
+                    conversation.UserId == userId,
+                cancellationToken);
+
+        if (!conversationExists)
+        {
+            return Array.Empty<CopilotMessage>();
+        }
+
+        return await dbContext.CopilotMessages
+            .Where(message =>
+                message.ConversationId == conversationId &&
+                message.SequenceNumber > summarizedThroughSequenceNumber)
+            .OrderByDescending(message => message.SequenceNumber)
+            .Take(maxMessages)
+            .OrderBy(message => message.SequenceNumber)
+            .ToListAsync(cancellationToken);
     }
 
     private static CopilotContextType MapContextType(CopilotPageContext? context)

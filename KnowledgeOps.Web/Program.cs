@@ -2,6 +2,7 @@ using KnowledgeOps.AI;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Domain.Repositories;
+using KnowledgeOps.Web.Models.Copilot;
 using KnowledgeOps.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,9 +47,17 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICopilotService, CopilotService>();
 builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
+builder.Services.AddScoped<ICopilotHistorySummarizer, CopilotHistorySummarizer>();
+
 
 builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
+
+builder.Services
+    .AddOptions<CopilotHistoryOptions>()
+    .Bind(builder.Configuration.GetSection(CopilotHistoryOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 var app = builder.Build();
 

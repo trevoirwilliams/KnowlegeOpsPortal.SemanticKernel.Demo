@@ -68,6 +68,27 @@ public static class KnowledgeOpsPromptTemplates
         - Keep the response concise and practical.
         """;
 
+    public const string ConversationHistorySummary = """
+        You are summarizing an ongoing copilot conversation for future context.
+
+        Existing conversation summary:
+        {{$existingSummary}}
+
+        New conversation messages to fold into the summary:
+        {{$conversationText}}
+
+        Create a concise memory summary that preserves:
+        - the user's goals
+        - important facts already provided
+        - decisions or recommendations already discussed
+        - constraints that should influence future responses
+        - unresolved questions or next steps
+
+        Do not include small talk.
+        Do not invent facts.
+        Do not summarize the assistant's wording unless it affects the user's goal.
+        Keep the summary under 250 words.
+        """;
 public static ChatHistory CreateOperationsAssistantHistory()
     {
         var history = new ChatHistory();

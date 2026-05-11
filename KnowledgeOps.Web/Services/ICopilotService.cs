@@ -1,6 +1,7 @@
 using KnowledgeOps.AI.Services;
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Web.Models.Copilot;
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace KnowledgeOps.Web.Services;
@@ -15,7 +16,9 @@ public interface ICopilotService
 public sealed class CopilotService(
     IKnowledgeOpsChatClient chatClient,
     ICopilotConversationService conversationService,
+    ICopilotHistorySummarizer historySummarizer,
     ICurrentUserService currentUserService,
+    IOptions<CopilotHistoryOptions> historyOptions,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
@@ -36,11 +39,26 @@ public sealed class CopilotService(
             request,
             userId,
             cancellationToken);
+
         await conversationService.AddMessageAsync(
             conversation.Id,
             CopilotMessageRole.User,
             request.Message,
             cancellationToken);
+
+        await historySummarizer.SummarizeIfNeededAsync(
+        conversation,
+        cancellationToken);
+
+        var summarizedThroughSequence = conversation.SummarizedThroughSequenceNumber ?? 0;
+
+        var recentMessages = await conversationService.GetMessagesForModelAsync(
+            conversation.Id,
+            userId,
+            historyOptions.Value.MaxModelMessages,
+            summarizedThroughSequence,
+            cancellationToken);
+
 
         var history = new ChatHistory();
 
@@ -49,6 +67,19 @@ public sealed class CopilotService(
         if (request.Context is not null)
         {
             history.AddUserMessage(BuildContextMessage(request.Context));
+        }
+
+        if (!string.IsNullOrWhiteSpace(conversation.Summary))
+        {
+            history.AddSystemMessage($"""
+            Conversation memory summary from earlier in this same chat:
+            {conversation.Summary}
+            """);
+        }
+
+        foreach (var previousMessage in recentMessages)
+        {
+            AddPersistedMessageToHistory(history, previousMessage);
         }
 
         history.AddUserMessage(request.Message.Trim());
@@ -79,6 +110,31 @@ public sealed class CopilotService(
             ContextSummary = BuildContextSummary(request.Context),
             CreatedAt = DateTimeOffset.UtcNow
         };
+    }
+
+    private static void AddPersistedMessageToHistory(
+    ChatHistory history,
+    CopilotMessage message)
+    {
+        if (string.IsNullOrWhiteSpace(message.Content))
+        {
+            return;
+        }
+
+        switch (message.Role)
+        {
+            case CopilotMessageRole.User:
+                history.AddUserMessage(message.Content);
+                break;
+
+            case CopilotMessageRole.Assistant:
+                history.AddAssistantMessage(message.Content);
+                break;
+
+            case CopilotMessageRole.System:
+                history.AddSystemMessage(message.Content);
+                break;
+        }
     }
 
     private static string BuildSystemMessage(CopilotPageContext? context)
