@@ -1,3 +1,5 @@
+using KnowledgeOps.Domain.Models.Enums;
+
 namespace KnowledgeOps.Domain.Models;
 
 public class CopilotMessage

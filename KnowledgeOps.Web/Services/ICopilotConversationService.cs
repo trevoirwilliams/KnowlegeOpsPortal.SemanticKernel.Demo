@@ -1,6 +1,7 @@
 using System;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 using KnowledgeOps.Web.Models.Copilot;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ public interface ICopilotConversationService
     Task<CopilotConversation> GetOrCreateConversationAsync(
         CopilotRequest request,
         string? userId,
+        TimeSpan relevanceWindow,
         CancellationToken cancellationToken = default);
 
     Task<int> AddMessageAsync(
@@ -18,11 +20,34 @@ public interface ICopilotConversationService
         CopilotMessageRole role,
         string content,
         CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<CopilotMessage>> GetMessagesForModelAsync(
         int conversationId,
         string? userId,
         int maxMessages,
         int summarizedThroughSequenceNumber,
+        CancellationToken cancellationToken = default);
+    
+    Task<CopilotConversation?> GetLatestActiveConversationAsync(
+    CopilotPageContext? context,
+    string? userId,
+    TimeSpan relevanceWindow,
+    CancellationToken cancellationToken = default);
+
+    Task<CopilotHistoryResponse> GetHistoryResponseAsync(
+        CopilotPageContext? context,
+        string? userId,
+        TimeSpan relevanceWindow,
+        int maxMessages,
+        CancellationToken cancellationToken = default);
+
+    Task<bool> ClearConversationAsync(
+        int conversationId,
+        string? userId,
+        CancellationToken cancellationToken = default);
+
+    Task<int> DeleteConversationsOlderThanAsync(
+        TimeSpan maxAge,
         CancellationToken cancellationToken = default);
 }
 
@@ -67,7 +92,7 @@ public class CopilotConversationService(
         return message.Id;
     }
 
-    public async Task<CopilotConversation> GetOrCreateConversationAsync(CopilotRequest request, string? userId, CancellationToken cancellationToken = default)
+    public async Task<CopilotConversation> GetOrCreateConversationAsync(CopilotRequest request, string? userId, TimeSpan relevanceWindow, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -88,6 +113,18 @@ public class CopilotConversationService(
             logger.LogWarning(
                 "Conversation {ConversationId} was not found for the current user.",
                 request.ConversationId);
+        }
+
+        var latestActiveConversation = await GetLatestActiveConversationAsync(   
+            request.Context,
+            userId,
+            relevanceWindow,
+            cancellationToken
+        );
+
+        if (latestActiveConversation is not null)
+        {
+            return latestActiveConversation;
         }
 
         var contextType = MapContextType(request.Context);
@@ -122,7 +159,7 @@ public class CopilotConversationService(
 
         if (!conversationExists)
         {
-            return Array.Empty<CopilotMessage>();
+            return [];
         }
 
         return await dbContext.CopilotMessages
@@ -193,5 +230,95 @@ public class CopilotConversationService(
         return trimmedMessage.Length <= 60
             ? trimmedMessage
             : $"{trimmedMessage[..60]}...";
+    }
+
+    public async Task<CopilotConversation?> GetLatestActiveConversationAsync(CopilotPageContext? context, string? userId, TimeSpan relevanceWindow, CancellationToken cancellationToken = default)
+    {
+        var contextType = MapContextType(context);
+        var contextId = ResolveContextId(context);
+        var cutoffUtc = DateTime.UtcNow.Subtract(relevanceWindow);
+
+        return await dbContext.CopilotConversations
+        .Where(conversation =>
+            conversation.UserId == userId &&
+            conversation.ContextType == contextType &&
+            conversation.ContextId == contextId &&
+            conversation.UpdatedUtc >= cutoffUtc)
+        .OrderByDescending(conversation => conversation.UpdatedUtc)
+        .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<CopilotHistoryResponse> GetHistoryResponseAsync(CopilotPageContext? context, string? userId, TimeSpan relevanceWindow, int maxMessages, CancellationToken cancellationToken = default)
+    {
+        var conversation = await GetLatestActiveConversationAsync(
+            context,
+            userId,
+            relevanceWindow,
+            cancellationToken);
+
+        if (conversation is null)
+        {
+            return new CopilotHistoryResponse();
+        }
+
+        var messages = await dbContext.CopilotMessages
+        .Where(message => message.ConversationId == conversation.Id)
+        .OrderByDescending(message => message.SequenceNumber)
+        .Take(maxMessages)
+        .OrderBy(message => message.SequenceNumber)
+        .Select(message => new CopilotHistoryMessage
+        {
+            Role = message.Role == CopilotMessageRole.User ? "user" : "assistant",
+            Content = message.Content,
+            CreatedUtc = message.CreatedUtc
+        })
+        .ToListAsync(cancellationToken);
+
+        return new CopilotHistoryResponse
+        {
+            ConversationId = conversation.Id,
+            ContextSummary = conversation.Title,
+            Messages = messages
+        };
+
+
+    }
+
+    public async Task<bool> ClearConversationAsync(int conversationId, string? userId, CancellationToken cancellationToken = default)
+    {
+        var conversation = await dbContext.CopilotConversations
+            .Include(item => item.Messages)
+            .FirstOrDefaultAsync(
+                item => item.Id == conversationId && item.UserId == userId,
+                cancellationToken);
+
+        if (conversation is null)
+        {
+            return false;
+        }
+
+        dbContext.CopilotConversations.Remove(conversation);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+
+    public async Task<int> DeleteConversationsOlderThanAsync(TimeSpan maxAge, CancellationToken cancellationToken = default)
+    {
+        var cutoffUtc = DateTime.UtcNow.Subtract(maxAge);
+
+        var oldConversations = await dbContext.CopilotConversations
+            .Where(conversation => conversation.UpdatedUtc < cutoffUtc)
+            .ToListAsync(cancellationToken);
+
+        if (oldConversations.Count == 0)
+        {
+            return 0;
+        }
+
+        dbContext.CopilotConversations.RemoveRange(oldConversations);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return oldConversations.Count;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Domain.Repositories;
 

@@ -1,5 +1,6 @@
 using KnowledgeOps.AI.Services;
 using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 using KnowledgeOps.Web.Models.Copilot;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.ChatCompletion;
@@ -16,9 +17,9 @@ public interface ICopilotService
 public sealed class CopilotService(
     IKnowledgeOpsChatClient chatClient,
     ICopilotConversationService conversationService,
-    ICopilotHistorySummarizer historySummarizer,
     ICurrentUserService currentUserService,
-    IOptions<CopilotHistoryOptions> historyOptions,
+    IOptions<CopilotHistoryOptions> options,
+    ICopilotHistorySummarizer historySummarizer,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
@@ -33,11 +34,12 @@ public sealed class CopilotService(
                 "A message is required before the copilot can respond.",
                 nameof(request));
         }
-
+        var settings = options.Value;
         var userId = currentUserService.UserId;
         var conversation = await conversationService.GetOrCreateConversationAsync(
             request,
             userId,
+            TimeSpan.FromHours(settings.ConversationRelevanceHours),
             cancellationToken);
 
         await conversationService.AddMessageAsync(
@@ -46,19 +48,16 @@ public sealed class CopilotService(
             request.Message,
             cancellationToken);
 
-        await historySummarizer.SummarizeIfNeededAsync(
-        conversation,
-        cancellationToken);
+        await historySummarizer.SummarizeIfNeededAsync(conversation, cancellationToken);
 
         var summarizedThroughSequence = conversation.SummarizedThroughSequenceNumber ?? 0;
 
         var recentMessages = await conversationService.GetMessagesForModelAsync(
             conversation.Id,
             userId,
-            historyOptions.Value.MaxModelMessages,
+            settings.MaxModelMessages,
             summarizedThroughSequence,
             cancellationToken);
-
 
         var history = new ChatHistory();
 
@@ -76,10 +75,9 @@ public sealed class CopilotService(
             {conversation.Summary}
             """);
         }
-
-        foreach (var previousMessage in recentMessages)
+        foreach (var message in recentMessages)
         {
-            AddPersistedMessageToHistory(history, previousMessage);
+            AddPersistedMessageToHistory(history, message);
         }
 
         history.AddUserMessage(request.Message.Trim());
@@ -104,6 +102,7 @@ public sealed class CopilotService(
 
         return new CopilotResponse
         {
+            ConversationId = conversation.Id,
             Message = string.IsNullOrWhiteSpace(response)
                 ? "I could not generate a response for that request."
                 : response,

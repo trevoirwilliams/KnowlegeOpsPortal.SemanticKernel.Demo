@@ -40,12 +40,12 @@ public sealed class CopilotHistorySummarizer(
 
         var lastSummarizedSequence = conversation.SummarizedThroughSequenceNumber ?? 0;
 
-        var latestSequenceToKeep = await dbContext.CopilotMessages
+        var latestSequence = await dbContext.CopilotMessages
             .Where(message => message.ConversationId == conversation.Id)
             .Select(message => (int?)message.SequenceNumber)
             .MaxAsync(cancellationToken) ?? 0;
 
-        var summarizeThroughSequence = latestSequenceToKeep - settings.MessagesToKeepAfterSummary;
+        var summarizeThroughSequence = latestSequence - settings.MessagesToKeepAfterSummary;
 
         if (summarizeThroughSequence <= lastSummarizedSequence)
         {

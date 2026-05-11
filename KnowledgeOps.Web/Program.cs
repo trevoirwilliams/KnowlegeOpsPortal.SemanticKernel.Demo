@@ -2,6 +2,7 @@ using KnowledgeOps.AI;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Domain.Repositories;
+using KnowledgeOps.Web.BackgroundWorkers;
 using KnowledgeOps.Web.Models.Copilot;
 using KnowledgeOps.Web.Services;
 using Microsoft.AspNetCore.Identity;
@@ -49,6 +50,7 @@ builder.Services.AddScoped<ICopilotService, CopilotService>();
 builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
 builder.Services.AddScoped<ICopilotHistorySummarizer, CopilotHistorySummarizer>();
 
+builder.Services.AddHostedService<CopilotHistoryCleanupService>();
 
 builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();

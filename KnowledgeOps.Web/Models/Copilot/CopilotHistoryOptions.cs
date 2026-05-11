@@ -19,6 +19,12 @@ public sealed class CopilotHistoryOptions
     [Range(2, 50)]
     public int MessagesToKeepAfterSummary { get; init; } = 8;
 
+    [Range(1, 168)]
+    public int ConversationRelevanceHours { get; init; } = 24;
+
     [Range(1, 365)]
-    public int RetentionDays { get; init; } = 30;
+    public int RetentionDays { get; init; } = 10;
+
+    [Range(1, 30)]
+    public int CleanupIntervalDays { get; init; } = 10;
 }

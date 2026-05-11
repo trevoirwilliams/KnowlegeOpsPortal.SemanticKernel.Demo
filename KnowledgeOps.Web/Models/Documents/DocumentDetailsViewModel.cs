@@ -1,4 +1,4 @@
-using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Web.Models.Documents;
 

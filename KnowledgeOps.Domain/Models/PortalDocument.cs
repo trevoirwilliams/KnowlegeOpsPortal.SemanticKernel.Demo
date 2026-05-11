@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Domain.Models;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Domain.Repositories;
 

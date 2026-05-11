@@ -5,6 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="BackgroundWorkers\" />
     <Folder Include="Models\Account\" />
     <Folder Include="Models\Copilot\" />
     <Folder Include="Models\Documents\" />

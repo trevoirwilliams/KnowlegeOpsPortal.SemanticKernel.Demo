@@ -1,4 +1,5 @@
 using System;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Domain.Models;
 
