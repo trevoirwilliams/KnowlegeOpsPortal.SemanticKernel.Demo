@@ -5,7 +5,7 @@ namespace KnowledgeOps.Domain.Models;
 
 public class PortalDocument
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public string? UserId { get; set; }
 
@@ -29,5 +29,8 @@ public class PortalDocument
     public DateTime UploadedUtc { get; set; } = DateTime.UtcNow;
 
     public DateTime? ProcessedUtc { get; set; }
+
+    [MaxLength(500)]
+    public string? Tags { get; set; }
 }
 

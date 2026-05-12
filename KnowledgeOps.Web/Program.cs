@@ -54,7 +54,6 @@ builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySumma
 
 builder.Services.AddHostedService<CopilotHistoryCleanupService>();
 
-builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 
 builder.Services

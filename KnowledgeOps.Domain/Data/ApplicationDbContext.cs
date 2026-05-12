@@ -14,9 +14,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     public DbSet<BusinessRequest> BusinessRequests => Set<BusinessRequest>();
 
-    public DbSet<KnowledgeDocument> KnowledgeDocuments => Set<KnowledgeDocument>();
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

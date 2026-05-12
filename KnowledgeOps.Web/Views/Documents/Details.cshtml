@@ -1,5 +1,4 @@
-﻿@using KnowledgeOps.Domain.Models.Enums
-@using KnowledgeOps.Web.Models.Copilot
+﻿@using KnowledgeOps.Web.Models.Copilot
 @model KnowledgeOps.Web.Models.Documents.DocumentDetailsViewModel
 
 @{
@@ -23,8 +22,8 @@
                         <p class="text-muted small mb-1">@Model.Id</p>
                         <h1 class="h3 mb-0">@Model.Title</h1>
                     </div>
-                    <span class="badge @GetStatusClass(Model.Status)">
-                        @GetStatusLabel(Model.Status)
+                    <span class="badge @Model.StatusCssClass">
+                        @Model.StatusLabel
                     </span>
                 </div>
 
@@ -44,6 +43,18 @@
 
                     <dt class="col-sm-3">Last Reviewed</dt>
                     <dd class="col-sm-9">@Model.LastReviewedOn.ToString("MMMM d, yyyy")</dd>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.ContentType))
+                    {
+                        <dt class="col-sm-3">Content Type</dt>
+                        <dd class="col-sm-9">@Model.ContentType</dd>
+                    }
+
+                    @if (Model.FileSizeBytes is not null)
+                    {
+                        <dt class="col-sm-3">File Size</dt>
+                        <dd class="col-sm-9">@FormatBytes(Model.FileSizeBytes.Value)</dd>
+                    }
                 </dl>
 
                 <div class="mt-4">
@@ -73,32 +84,40 @@
             ["Category"] = Model.Category,
             ["Department"] = Model.Department,
             ["Owner"] = Model.Owner,
-            ["Status"] = GetStatusLabel(Model.Status),
+            ["Status"] = Model.StatusLabel,
             ["LastReviewedOn"] = Model.LastReviewedOn.ToString("yyyy-MM-dd"),
             ["Tags"] = string.Join(", ", Model.Tags)
         }
     };
+
+    if (!string.IsNullOrWhiteSpace(Model.ContentType))
+    {
+        assistantContext.Metadata["ContentType"] = Model.ContentType;
+    }
+
+    if (Model.FileSizeBytes is not null)
+    {
+        assistantContext.Metadata["FileSize"] = FormatBytes(Model.FileSizeBytes.Value);
+    }
 }
 <partial name="_AssistantContext" model="assistantContext" />
    
 @functions {
-    private static string GetStatusClass(KnowledgeDocumentStatus status)
+    private static string FormatBytes(long bytes)
     {
-        return status switch
+        if (bytes < 1024)
         {
-            KnowledgeDocumentStatus.Approved => "text-bg-success",
-            KnowledgeDocumentStatus.NeedsReview => "text-bg-warning",
-            KnowledgeDocumentStatus.Draft => "text-bg-secondary",
-            _ => "text-bg-light"
-        };
-    }
+            return $"{bytes} B";
+        }
 
-    private static string GetStatusLabel(KnowledgeDocumentStatus status)
-    {
-        return status switch
+        decimal kilobytes = bytes / 1024m;
+
+        if (kilobytes < 1024)
         {
-            KnowledgeDocumentStatus.NeedsReview => "Needs Review",
-            _ => status.ToString()
-        };
+            return $"{kilobytes:0.#} KB";
+        }
+
+        decimal megabytes = kilobytes / 1024m;
+        return $"{megabytes:0.#} MB";
     }
 }

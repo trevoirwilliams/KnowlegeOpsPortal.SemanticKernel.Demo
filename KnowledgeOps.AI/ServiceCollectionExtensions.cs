@@ -36,7 +36,6 @@ public static class ServiceCollectionExtensions
                 options.ApiKey);
 
             builder.Services.AddSingleton<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
-            builder.Services.AddSingleton<IDocumentRepository, InMemoryDocumentRepository>();
 
             builder.Plugins.AddFromType<TimePlugin>("Time");
             builder.Plugins.AddFromType<ConversationSummaryPlugin>("Summarization");

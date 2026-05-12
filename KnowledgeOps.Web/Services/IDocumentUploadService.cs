@@ -13,11 +13,12 @@ public interface IDocumentUploadService
         CancellationToken cancellationToken = default);
 
     Task<PortalDocument?> GetUploadedDocumentAsync(
-        int id,
+        Guid id,
         CancellationToken cancellationToken = default);
 
     Task<PortalDocument> UploadAsync(
         IFormFile file,
+        string? tags = null,
         CancellationToken cancellationToken = default);
 
 }
@@ -30,7 +31,7 @@ public class DocumentUploadService(
 {
     private readonly DocumentUploadOptions _options = options.Value;
 
-    public async Task<PortalDocument?> GetUploadedDocumentAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<PortalDocument?> GetUploadedDocumentAsync(Guid id, CancellationToken cancellationToken = default)
     {
         string? userId = currentUserService.UserId;
         return await dbContext.PortalDocuments
@@ -51,7 +52,7 @@ public class DocumentUploadService(
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<PortalDocument> UploadAsync(IFormFile file, CancellationToken cancellationToken = default)
+    public async Task<PortalDocument> UploadAsync(IFormFile file, string? tags = null, CancellationToken cancellationToken = default)
     {
         ValidateFile(file);
         string? userId = currentUserService.UserId;
@@ -68,18 +69,38 @@ public class DocumentUploadService(
 
         var document = new PortalDocument
         {
+            Id = Guid.NewGuid(),
             UserId = userId,
             OriginalFileName = file.FileName,
             StoredFilePath = filePath,
             ContentType = file.ContentType,
             FileSizeBytes = file.Length,
-            UploadedUtc = DateTime.UtcNow
+            UploadedUtc = DateTime.UtcNow,
+            Tags = NormalizeTags(tags)
         };
 
         dbContext.PortalDocuments.Add(document);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return document;
+    }
+
+    private string? NormalizeTags(string? tags)
+    {
+        if (string.IsNullOrWhiteSpace(tags))
+        {
+            return null;
+        }
+
+        var normalizedTags = tags
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(tag => tag.ToLowerInvariant())
+            .Distinct()
+            .ToList();
+
+        return normalizedTags.Count == 0
+            ? null
+            : string.Join(", ", normalizedTags);
     }
 
     private void ValidateFile(IFormFile file)
