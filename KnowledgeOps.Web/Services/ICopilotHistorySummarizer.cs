@@ -9,18 +9,18 @@ using System.Text;
 
 namespace KnowledgeOps.Web.Services;
 
-public interface ICopilotHistorySummarizer
+public interface ICopilotHistorySummarizerService
 {
     Task SummarizeIfNeededAsync(
         CopilotConversation conversation,
         CancellationToken cancellationToken = default);
 }
 
-public sealed class CopilotHistorySummarizer(
+public sealed class CopilotHistorySummarizerService(
     ApplicationDbContext dbContext,
     IKnowledgeOpsChatClient chatClient,
     IOptions<CopilotHistoryOptions> options,
-    ILogger<CopilotHistorySummarizer> logger) : ICopilotHistorySummarizer
+    ILogger<CopilotHistorySummarizerService> logger) : ICopilotHistorySummarizerService
 {
     public async Task SummarizeIfNeededAsync(
         CopilotConversation conversation,

@@ -4,6 +4,7 @@ using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Domain.Repositories;
 using KnowledgeOps.Web.BackgroundWorkers;
 using KnowledgeOps.Web.Models.Copilot;
+using KnowledgeOps.Web.Models.Documents;
 using KnowledgeOps.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICopilotService, CopilotService>();
 builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
-builder.Services.AddScoped<ICopilotHistorySummarizer, CopilotHistorySummarizer>();
+builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
+builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
 builder.Services.AddHostedService<CopilotHistoryCleanupService>();
 
@@ -58,6 +60,12 @@ builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRe
 builder.Services
     .AddOptions<CopilotHistoryOptions>()
     .Bind(builder.Configuration.GetSection(CopilotHistoryOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services
+    .AddOptions<DocumentUploadOptions>()
+    .Bind(builder.Configuration.GetSection(DocumentUploadOptions.SectionName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 

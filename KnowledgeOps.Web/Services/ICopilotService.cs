@@ -19,7 +19,7 @@ public sealed class CopilotService(
     ICopilotConversationService conversationService,
     ICurrentUserService currentUserService,
     IOptions<CopilotHistoryOptions> options,
-    ICopilotHistorySummarizer historySummarizer,
+    ICopilotHistorySummarizerService historySummarizer,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
