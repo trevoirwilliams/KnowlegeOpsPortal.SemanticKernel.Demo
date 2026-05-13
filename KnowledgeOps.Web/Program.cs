@@ -50,6 +50,13 @@ if (!string.IsNullOrWhiteSpace(ironPdfLicenseKey))
     IronPdf.License.LicenseKey = ironPdfLicenseKey;
 }
 
+string? ironOcrLicenseKey = builder.Configuration["IronOcr:LicenseKey"];
+
+if (!string.IsNullOrWhiteSpace(ironOcrLicenseKey))
+{
+    IronOcr.License.LicenseKey = ironOcrLicenseKey;
+}
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
@@ -61,7 +68,6 @@ builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService
 builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
 builder.Services.AddHostedService<CopilotHistoryCleanupService>();
-builder.Services.AddHostedService<DocumentProcessingWorker>();
 
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 

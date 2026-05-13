@@ -1,4 +1,5 @@
 using System;
+using IronOcr;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Domain.Models.Enums;
@@ -70,14 +71,26 @@ public class DocumentProcessingService(
             if (string.IsNullOrWhiteSpace(rawText) ||
                 rawText.Length < MinimumUsefulTextLength)
             {
-                document.ProcessingStatus = DocumentProcessingStatus.RequiresOcr;
-                document.ExtractedTextPreview =
-                    "No useful embedded text was found. This document may be scanned or image-based and requires OCR.";
-                document.ProcessingError = null;
-                document.ProcessedUtc = DateTime.UtcNow;
+                logger.LogInformation(
+                    "No useful embedded text found for document {DocumentId}. Running OCR fallback.",
+                    document.Id);
+                rawText = ExtractTextWithOcrAsync(
+                    document.StoredFilePath);
+                    
+                rawText = NormalizeExtractedText(rawText);
 
-                await dbContext.SaveChangesAsync(cancellationToken);
-                return;
+                if (string.IsNullOrWhiteSpace(rawText) ||
+                    rawText.Length < MinimumUsefulTextLength)
+                {
+                    logger.LogInformation(
+                        "No useful text found for document {DocumentId} after OCR fallback.",
+                        document.Id);
+                    await MarkFailedAsync(
+                        document.Id,
+                        "No useful text could be extracted from the document.",
+                        cancellationToken);
+                    return;
+                }
             }
 
             if (document.Content is null)
@@ -117,6 +130,15 @@ public class DocumentProcessingService(
                 "An error occurred during document processing. Please try again.",
                 cancellationToken);
         }
+    }
+
+    private string ExtractTextWithOcrAsync(string storedFilePath)
+    {
+        var ocr = new IronTesseract();
+        using var input = new OcrInput();
+        input.LoadPdf(storedFilePath);
+        OcrResult result = ocr.Read(input);
+        return result.Text;
     }
 
     public async Task<bool> ProcessNextQueuedDocumentAsync(CancellationToken cancellationToken = default)

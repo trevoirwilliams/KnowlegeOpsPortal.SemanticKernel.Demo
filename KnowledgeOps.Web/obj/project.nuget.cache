@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zYM4S9q/mWM=",
+  "dgSpecHash": "2SuUJhlmUzQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "C:\\Users\\Trevoir\\.nuget\\packages\\grpc.net.client\\2.62.0\\grpc.net.client.2.62.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\grpc.net.common\\2.62.0\\grpc.net.common.2.62.0.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Trevoir\\.nuget\\packages\\ironocr\\2026.5.2\\ironocr.2026.5.2.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\ironpdf\\2026.5.2\\ironpdf.2026.5.2.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\ironpdf.native.chrome.windows\\2026.5.2\\ironpdf.native.chrome.windows.2026.5.2.nupkg.sha512",
     "C:\\Users\\Trevoir\\.nuget\\packages\\ironpdf.slim\\2026.5.2\\ironpdf.slim.2026.5.2.nupkg.sha512",

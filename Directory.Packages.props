@@ -17,5 +17,6 @@
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.7" />
     <PackageVersion Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.75.0-preview" />
     <PackageVersion Include="IronPdf" Version="2026.5.2" />
+    <PackageVersion Include="IronOcr" Version="2026.5.2" />
   </ItemGroup>
 </Project>

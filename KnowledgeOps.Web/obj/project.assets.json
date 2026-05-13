@@ -165,6 +165,170 @@
           }
         }
       },
+      "IronOcr/2026.5.2": {
+        "type": "package",
+        "dependencies": {
+          "IronSoftware.Abstractions": "2026.1.2",
+          "IronSoftware.Common": "2026.4.2",
+          "IronSoftware.System.Drawing": "2026.4.1",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.0/IronOcr.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/IronOcr.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/netstandard2.0/IronOcr.targets": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/IronOcrInterop.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/OcrInternals.Windows.deployment.json": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/OcrInternals.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/Tesseract.Native.deployment.json": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/eng.base.traineddata": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/eng.best.traineddata": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/eng.fast.traineddata": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/eng.user-patterns": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/eng.user-words": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/liblept-5.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/libtesseract-5.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/openvino.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/openvino_c.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/openvino_intel_cpu_plugin.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/openvino_ir_frontend.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/openvino_paddle_frontend.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/osd.traineddata": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/pdf.ttf": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/pdf.ttx": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/tbb12.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/tbbbind_2_5.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/tbbmalloc.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/tbbmalloc_proxy.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/IronOcrInterop.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/Tesseract.Native.deployment.json": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/eng.base.traineddata": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/eng.best.traineddata": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/eng.fast.traineddata": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/eng.user-patterns": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/eng.user-words": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/liblept-5.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/libtesseract-5.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/osd.traineddata": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/pdf.ttf": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/pdf.ttx": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
       "IronPdf/2026.5.2": {
         "type": "package",
         "dependencies": {
@@ -2609,6 +2773,77 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "IronOcr/2026.5.2": {
+      "sha512": "/fMk8ZiDaSGvDADQK93L+HjUCxfqOqLYPIgvVRvgcm6qCMfg60cNucqgKR5aLh2wK1W1pPnyp0IeitUfL2LVmw==",
+      "type": "package",
+      "path": "ironocr/2026.5.2",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "EULA.txt",
+        "README.txt",
+        "build/net/IronOcr.targets",
+        "build/netstandard2.0/IronOcr.targets",
+        "buildTransitive/net/IronOcr.targets",
+        "buildTransitive/netstandard2.0/IronOcr.targets",
+        "docs/README.md",
+        "images/iron-logo-128.png",
+        "ironocr.2026.5.2.nupkg.sha512",
+        "ironocr.nuspec",
+        "lib/netstandard2.0/IronOcr.dll",
+        "lib/netstandard2.0/IronOcr.xml",
+        "models/Cv/haarcascade_frontalface_default.xml",
+        "models/Detection/en-detection.pdiparams",
+        "models/Detection/en-detection.pdmodel",
+        "models/Detection/multilingual-detection.pdiparams",
+        "models/Detection/multilingual-detection.pdmodel",
+        "models/Recognition/Labels/ch_dict.txt",
+        "models/Recognition/Labels/en_dict.txt",
+        "models/Recognition/ch-recognition.pdiparams",
+        "models/Recognition/ch-recognition.pdmodel",
+        "models/Recognition/en-recognition.pdiparams",
+        "models/Recognition/en-recognition.pdmodel",
+        "models/Yolo/license-plate-detector.bin",
+        "models/Yolo/license-plate-detector.xml",
+        "runtimes/win-x64/native/IronOcrInterop.dll",
+        "runtimes/win-x64/native/OcrInternals.Windows.deployment.json",
+        "runtimes/win-x64/native/OcrInternals.dll",
+        "runtimes/win-x64/native/Tesseract.Native.deployment.json",
+        "runtimes/win-x64/native/eng.base.traineddata",
+        "runtimes/win-x64/native/eng.best.traineddata",
+        "runtimes/win-x64/native/eng.fast.traineddata",
+        "runtimes/win-x64/native/eng.user-patterns",
+        "runtimes/win-x64/native/eng.user-words",
+        "runtimes/win-x64/native/liblept-5.dll",
+        "runtimes/win-x64/native/libtesseract-5.dll",
+        "runtimes/win-x64/native/openvino.dll",
+        "runtimes/win-x64/native/openvino_c.dll",
+        "runtimes/win-x64/native/openvino_intel_cpu_plugin.dll",
+        "runtimes/win-x64/native/openvino_ir_frontend.dll",
+        "runtimes/win-x64/native/openvino_paddle_frontend.dll",
+        "runtimes/win-x64/native/osd.traineddata",
+        "runtimes/win-x64/native/pdf.ttf",
+        "runtimes/win-x64/native/pdf.ttx",
+        "runtimes/win-x64/native/tbb12.dll",
+        "runtimes/win-x64/native/tbbbind_2_5.dll",
+        "runtimes/win-x64/native/tbbmalloc.dll",
+        "runtimes/win-x64/native/tbbmalloc_proxy.dll",
+        "runtimes/win-x86/native/IronOcrInterop.dll",
+        "runtimes/win-x86/native/Tesseract.Native.deployment.json",
+        "runtimes/win-x86/native/eng.base.traineddata",
+        "runtimes/win-x86/native/eng.best.traineddata",
+        "runtimes/win-x86/native/eng.fast.traineddata",
+        "runtimes/win-x86/native/eng.user-patterns",
+        "runtimes/win-x86/native/eng.user-words",
+        "runtimes/win-x86/native/liblept-5.dll",
+        "runtimes/win-x86/native/libtesseract-5.dll",
+        "runtimes/win-x86/native/osd.traineddata",
+        "runtimes/win-x86/native/pdf.ttf",
+        "runtimes/win-x86/native/pdf.ttx",
+        "tools/install.ps1"
       ]
     },
     "IronPdf/2026.5.2": {
@@ -5231,6 +5466,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "IronOcr >= 2026.5.2",
       "IronPdf >= 2026.5.2",
       "KnowledgeOps.AI >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.7"
@@ -5294,6 +5530,11 @@
         "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
+          "IronOcr": {
+            "target": "Package",
+            "version": "[2026.5.2, )",
+            "versionCentrallyManaged": true
+          },
           "IronPdf": {
             "target": "Package",
             "version": "[2026.5.2, )",
@@ -5306,6 +5547,7 @@
           }
         },
         "centralPackageVersions": {
+          "IronOcr": "2026.5.2",
           "IronPdf": "2026.5.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.7",
           "Microsoft.EntityFrameworkCore.Design": "10.0.7",
