@@ -32,5 +32,7 @@ public class PortalDocument
 
     [MaxLength(500)]
     public string? Tags { get; set; }
+
+    public PortalDocumentContent? Content { get; set; }
 }
 

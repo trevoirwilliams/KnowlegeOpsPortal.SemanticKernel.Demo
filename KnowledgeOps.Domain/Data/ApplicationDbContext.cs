@@ -11,7 +11,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CopilotMessage> CopilotMessages => Set<CopilotMessage>();
 
     public DbSet<PortalDocument> PortalDocuments => Set<PortalDocument>();
-    
+
+    public DbSet<PortalDocumentContent> PortalDocumentContents => Set<PortalDocumentContent>();
+
     public DbSet<BusinessRequest> BusinessRequests => Set<BusinessRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

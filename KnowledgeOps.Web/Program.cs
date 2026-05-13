@@ -43,6 +43,13 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 
+string? ironPdfLicenseKey = builder.Configuration["IronPdf:LicenseKey"];
+
+if (!string.IsNullOrWhiteSpace(ironPdfLicenseKey))
+{
+    IronPdf.License.LicenseKey = ironPdfLicenseKey;
+}
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
@@ -50,9 +57,11 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICopilotService, CopilotService>();
 builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
 builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
+builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService>();
 builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
 builder.Services.AddHostedService<CopilotHistoryCleanupService>();
+builder.Services.AddHostedService<DocumentProcessingWorker>();
 
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 

@@ -10,6 +10,7 @@ public enum DocumentProcessingStatus
     Chunked = 6,
     Embedded = 7,
     Ready = 8,
-    Failed = 9
+    Failed = 9,
+    ExtractingText = 10
 }
 

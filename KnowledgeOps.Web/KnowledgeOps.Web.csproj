@@ -23,5 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" /> 
+    <PackageReference Include="IronPdf" />
   </ItemGroup>
 </Project>

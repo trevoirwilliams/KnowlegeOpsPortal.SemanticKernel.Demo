@@ -6,5 +6,7 @@
     <Import Project="$(NuGetPackageRoot)openai\2.10.0\buildTransitive\netstandard2.0\OpenAI.targets" Condition="Exists('$(NuGetPackageRoot)openai\2.10.0\buildTransitive\netstandard2.0\OpenAI.targets')" />
     <Import Project="$(NuGetPackageRoot)mono.texttemplating\3.0.0\buildTransitive\Mono.TextTemplating.targets" Condition="Exists('$(NuGetPackageRoot)mono.texttemplating\3.0.0\buildTransitive\Mono.TextTemplating.targets')" />
     <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.11.0\buildTransitive\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.11.0\buildTransitive\Microsoft.CodeAnalysis.Analyzers.targets')" />
+    <Import Project="$(NuGetPackageRoot)ironsoftware.native.pdfmodel\2026.5.2\buildTransitive\netstandard2.0\IronSoftware.Native.PdfModel.targets" Condition="Exists('$(NuGetPackageRoot)ironsoftware.native.pdfmodel\2026.5.2\buildTransitive\netstandard2.0\IronSoftware.Native.PdfModel.targets')" />
+    <Import Project="$(NuGetPackageRoot)ironpdf.native.chrome.windows\2026.5.2\buildTransitive\netstandard2.0\IronPdf.Native.Chrome.Windows.targets" Condition="Exists('$(NuGetPackageRoot)ironpdf.native.chrome.windows\2026.5.2\buildTransitive\netstandard2.0\IronPdf.Native.Chrome.Windows.targets')" />
   </ImportGroup>
 </Project>

@@ -1,6 +1,7 @@
 using System;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 using KnowledgeOps.Web.Models.Documents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -76,7 +77,8 @@ public class DocumentUploadService(
             ContentType = file.ContentType,
             FileSizeBytes = file.Length,
             UploadedUtc = DateTime.UtcNow,
-            Tags = NormalizeTags(tags)
+            Tags = NormalizeTags(tags),
+            ProcessingStatus = DocumentProcessingStatus.Uploaded
         };
 
         dbContext.PortalDocuments.Add(document);

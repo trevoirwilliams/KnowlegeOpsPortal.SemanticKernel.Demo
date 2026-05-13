@@ -90,6 +90,7 @@
             }
           },
           "centralPackageVersions": {
+            "IronPdf": "2026.5.2",
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.7",
             "Microsoft.EntityFrameworkCore.Design": "10.0.7",
             "Microsoft.EntityFrameworkCore.Sqlite": "10.0.7",
@@ -477,6 +478,7 @@
             }
           },
           "centralPackageVersions": {
+            "IronPdf": "2026.5.2",
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.7",
             "Microsoft.EntityFrameworkCore.Design": "10.0.7",
             "Microsoft.EntityFrameworkCore.Sqlite": "10.0.7",
@@ -862,6 +864,7 @@
             }
           },
           "centralPackageVersions": {
+            "IronPdf": "2026.5.2",
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.7",
             "Microsoft.EntityFrameworkCore.Design": "10.0.7",
             "Microsoft.EntityFrameworkCore.Sqlite": "10.0.7",
