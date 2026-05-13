@@ -105,7 +105,7 @@ public class DocumentProcessingService(
                     RawText = rawText,
                     CharacterCount = rawText.Length,
                     PageCount = pageCount,
-                    ExtractionEngine = "IronPDF",
+                    ExtractionEngine = processingMethod,
                     ExtractedUtc = DateTime.UtcNow
                 });
             }
