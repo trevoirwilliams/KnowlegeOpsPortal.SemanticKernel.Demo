@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using IronOcr;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
@@ -23,9 +24,11 @@ public class DocumentProcessingService(
 {
     private const int PreviewLength = 1_000;
     private const int MinimumUsefulTextLength = 50;
+    private const int MaximumConsecutiveBlankLines = 2;
 
     public async Task ProcessClaimedDocumentAsync(Guid documentId, CancellationToken cancellationToken = default)
     {
+        var processingMethod = "IronPDF";
         var document = await dbContext.PortalDocuments
             .Include(d => d.Content)
             .FirstOrDefaultAsync(
@@ -76,7 +79,7 @@ public class DocumentProcessingService(
                     document.Id);
                 rawText = ExtractTextWithOcrAsync(
                     document.StoredFilePath);
-                    
+
                 rawText = NormalizeExtractedText(rawText);
 
                 if (string.IsNullOrWhiteSpace(rawText) ||
@@ -91,6 +94,7 @@ public class DocumentProcessingService(
                         cancellationToken);
                     return;
                 }
+                processingMethod = "IronOCR";
             }
 
             if (document.Content is null)
@@ -110,7 +114,7 @@ public class DocumentProcessingService(
                 document.Content.RawText = rawText;
                 document.Content.CharacterCount = rawText.Length;
                 document.Content.PageCount = pageCount;
-                document.Content.ExtractionEngine = "IronPDF";
+                document.Content.ExtractionEngine = processingMethod;
                 document.Content.ExtractedUtc = DateTime.UtcNow;
             }
 
@@ -206,10 +210,24 @@ public class DocumentProcessingService(
             return string.Empty;
         }
 
-        return text
+        string normalizedText = text
             .Replace("\r\n", "\n")
             .Replace("\r", "\n")
             .Trim();
+
+        string[] cleanedLines = normalizedText
+            .Split('\n')
+            .Select(line => Regex.Replace(line, @"[ \t]+", " ").Trim())
+            .ToArray();
+
+        normalizedText = string.Join('\n', cleanedLines);
+
+        normalizedText = Regex.Replace(
+            normalizedText,
+            @"\n{3,}",
+            new string('\n', MaximumConsecutiveBlankLines));
+
+        return normalizedText.Trim();
     }
 
 }

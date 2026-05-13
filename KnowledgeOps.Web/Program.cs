@@ -68,6 +68,7 @@ builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService
 builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
 builder.Services.AddHostedService<CopilotHistoryCleanupService>();
+builder.Services.AddHostedService<DocumentProcessingWorker>();
 
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 

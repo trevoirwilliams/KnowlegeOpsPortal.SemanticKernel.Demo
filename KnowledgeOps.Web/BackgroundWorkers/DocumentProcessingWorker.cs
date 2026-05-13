@@ -21,7 +21,9 @@ public class DocumentProcessingWorker(
 
                 var documentProcessingService =
                     scope.ServiceProvider.GetRequiredService<IDocumentProcessingService>();
+                
                 await documentProcessingService.ProcessNextQueuedDocumentAsync(stoppingToken);
+                
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {
