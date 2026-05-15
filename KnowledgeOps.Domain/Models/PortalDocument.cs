@@ -34,5 +34,7 @@ public class PortalDocument
     public string? Tags { get; set; }
 
     public PortalDocumentContent? Content { get; set; }
+
+    public ICollection<PortalDocumentChunk> Chunks { get; set; } = [];
 }
 

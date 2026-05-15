@@ -5,10 +5,10 @@ using Microsoft.Extensions.Options;
 
 namespace KnowledgeOps.Web.BackgroundWorkers;
 
-public class CopilotHistoryCleanupService(
+public class CopilotHistoryCleanupWorkerService(
     IServiceScopeFactory scopeFactory,
     IOptions<CopilotHistoryOptions> options,
-    ILogger<CopilotHistoryCleanupService> logger) : BackgroundService
+    ILogger<CopilotHistoryCleanupWorkerService> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

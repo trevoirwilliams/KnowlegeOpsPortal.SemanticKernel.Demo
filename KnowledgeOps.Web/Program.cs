@@ -65,10 +65,12 @@ builder.Services.AddScoped<ICopilotService, CopilotService>();
 builder.Services.AddScoped<ICopilotConversationService, CopilotConversationService>();
 builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
 builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService>();
+builder.Services.AddScoped<IDocumentChunkingService, DocumentChunkingService>();
 builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
-builder.Services.AddHostedService<CopilotHistoryCleanupService>();
-builder.Services.AddHostedService<DocumentProcessingWorker>();
+builder.Services.AddHostedService<CopilotHistoryCleanupWorkerService>();
+builder.Services.AddHostedService<DocumentProcessingWorkerService>();
+builder.Services.AddHostedService<DocumentChunkingWorkerService>();
 
 builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 
@@ -81,6 +83,12 @@ builder.Services
 builder.Services
     .AddOptions<DocumentUploadOptions>()
     .Bind(builder.Configuration.GetSection(DocumentUploadOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services
+    .AddOptions<DocumentChunkingOptions>()
+    .Bind(builder.Configuration.GetSection(DocumentChunkingOptions.SectionName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 

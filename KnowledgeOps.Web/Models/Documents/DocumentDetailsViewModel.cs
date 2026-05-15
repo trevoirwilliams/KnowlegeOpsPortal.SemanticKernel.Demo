@@ -33,4 +33,14 @@ public sealed class DocumentDetailsViewModel
     public string? ProcessingError { get; init; }
 
     public string? ExtractedTextPreview { get; init; }
+
+    public int? CharacterCount { get; init; }
+
+    public int? PageCount { get; init; }
+
+    public string? ExtractionEngine { get; init; }
+
+    public int ChunkCount { get; init; }
+
+    public IReadOnlyList<DocumentChunkPreviewViewModel> ChunkPreviews { get; init; } = [];
 }

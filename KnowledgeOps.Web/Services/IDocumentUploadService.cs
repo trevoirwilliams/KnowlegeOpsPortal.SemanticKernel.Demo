@@ -37,6 +37,8 @@ public class DocumentUploadService(
         string? userId = currentUserService.UserId;
         return await dbContext.PortalDocuments
             .AsNoTracking()
+            .Include(document => document.Content)
+            .Include(document => document.Chunks)
             .FirstOrDefaultAsync(
                 document => document.Id == id && document.UserId == userId,
                 cancellationToken);

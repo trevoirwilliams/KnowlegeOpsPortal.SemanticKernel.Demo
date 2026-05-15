@@ -3,9 +3,9 @@ using KnowledgeOps.Web.Services;
 
 namespace KnowledgeOps.Web.BackgroundWorkers;
 
-public class DocumentProcessingWorker(
+public class DocumentProcessingWorkerService(
     IServiceScopeFactory serviceScopeFactory,
-    ILogger<DocumentProcessingWorker> logger) : BackgroundService
+    ILogger<DocumentProcessingWorkerService> logger) : BackgroundService
 {
     private static readonly TimeSpan PollingInterval = TimeSpan.FromSeconds(10);
 

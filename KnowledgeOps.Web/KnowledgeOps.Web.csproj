@@ -8,7 +8,6 @@
     <Folder Include="BackgroundWorkers\" />
     <Folder Include="Models\Account\" />
     <Folder Include="Models\Copilot\" />
-    <Folder Include="Models\Documents\" />
     <Folder Include="Models\Requests\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Documents\" />

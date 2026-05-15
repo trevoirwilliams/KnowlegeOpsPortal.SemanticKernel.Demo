@@ -14,6 +14,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<PortalDocumentContent> PortalDocumentContents => Set<PortalDocumentContent>();
 
+    public DbSet<PortalDocumentChunk> PortalDocumentChunks =>
+    Set<PortalDocumentChunk>();
+
     public DbSet<BusinessRequest> BusinessRequests => Set<BusinessRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +48,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .HasMaxLength(50);
 
             entity.HasIndex(e => new { e.UserId, e.ProcessingStatus });
+        });
+
+        modelBuilder.Entity<PortalDocumentChunk>(entity =>
+        {
+            entity.HasIndex(e => new
+            {
+                e.PortalDocumentId,
+                e.ChunkIndex
+            })
+            .IsUnique();
+
+            entity.HasIndex(e => e.ContentHash);
         });
     }
 }
