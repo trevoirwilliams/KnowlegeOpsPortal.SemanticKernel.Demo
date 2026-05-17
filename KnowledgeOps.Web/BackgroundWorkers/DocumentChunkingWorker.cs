@@ -29,7 +29,6 @@ public class DocumentChunkingWorkerService(
             catch (Exception ex)
             {
                 logger.LogError(ex, "An error occurred while chunking documents.");
-                Task.Delay(PollingInterval, stoppingToken).Wait(stoppingToken);
             }
 
             await Task.Delay(PollingInterval, stoppingToken);

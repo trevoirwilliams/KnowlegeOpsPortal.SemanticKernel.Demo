@@ -14,4 +14,10 @@ public sealed class AzureOpenAIOptions
 
     [Required]
     public string ApiKey { get; init; } = string.Empty;
+
+    [Required]
+    public string EmbeddingDeploymentName { get; init; } = string.Empty;
+
+    [Range(1, 4096)]
+    public int EmbeddingDimensions { get; init; } = 1536;
 }

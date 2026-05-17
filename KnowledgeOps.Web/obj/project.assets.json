@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 3,
   "targets": {
     "net10.0": {
       "Azure.AI.OpenAI/2.9.0-beta.1": {
@@ -1611,6 +1611,20 @@
           }
         }
       },
+      "Microsoft.Data.Sqlite/9.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Data.Sqlite.Core": "9.0.10",
+          "SQLitePCLRaw.bundle_e_sqlite3": "2.1.10",
+          "SQLitePCLRaw.core": "2.1.10"
+        },
+        "compile": {
+          "lib/netstandard2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/_._": {}
+        }
+      },
       "Microsoft.Data.Sqlite.Core/10.0.7": {
         "type": "package",
         "dependencies": {
@@ -1890,6 +1904,26 @@
           }
         }
       },
+      "Microsoft.SemanticKernel.Connectors.SqliteVec/1.74.0-preview": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "9.0.10",
+          "Microsoft.Extensions.AI.Abstractions": "10.4.0",
+          "Microsoft.Extensions.VectorData.Abstractions": "10.1.0",
+          "System.Numerics.Tensors": "10.0.4",
+          "sqlite-vec": "0.1.7-alpha.2.1"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.SemanticKernel.Core/1.75.0": {
         "type": "package",
         "dependencies": {
@@ -2090,6 +2124,41 @@
         "runtime": {
           "lib/net6.0/SixLabors.ImageSharp.Drawing.dll": {
             "related": ".xml"
+          }
+        }
+      },
+      "sqlite-vec/0.1.7-alpha.2.1": {
+        "type": "package",
+        "contentFiles": {
+          "contentFiles/any/any/_._": {
+            "buildAction": "None",
+            "codeLanguage": "any",
+            "copyToOutput": false
+          }
+        },
+        "build": {
+          "build/netstandard2.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm64/native/vec0.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-x64/native/vec0.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/vec0.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/vec0.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/vec0.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
           }
         }
       },
@@ -4340,6 +4409,20 @@
         "microsoft.codeanalysis.workspaces.msbuild.nuspec"
       ]
     },
+    "Microsoft.Data.Sqlite/9.0.10": {
+      "sha512": "1waeeEEM/Dp5l2laUByEEWfd6qyI00HExDduhLKGT2kPnHArjIDcMf2z9HIjeLPoR56iBHhvXTfAv1hiH/wAAQ==",
+      "type": "package",
+      "path": "microsoft.data.sqlite/9.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "lib/netstandard2.0/_._",
+        "microsoft.data.sqlite.9.0.10.nupkg.sha512",
+        "microsoft.data.sqlite.nuspec"
+      ]
+    },
     "Microsoft.Data.Sqlite.Core/10.0.7": {
       "sha512": "xVrtBg3M1wJlBDkoT0dXEYB/wSc8bIHJPYtw/bu1AqpWgF79uPSs87DAhERR/Ilumre6TKZa1cjMg3VUUObVLA==",
       "type": "package",
@@ -4659,6 +4742,28 @@
         "microsoft.semantickernel.connectors.openai.nuspec"
       ]
     },
+    "Microsoft.SemanticKernel.Connectors.SqliteVec/1.74.0-preview": {
+      "sha512": "273VVZhR0y/bzLrePIccJT3AskKt2I7sfsGnJyn0orRiIW/3JEdJ0mev8fbdbzl0r4umvzr+0le29nvtcGwyOQ==",
+      "type": "package",
+      "path": "microsoft.semantickernel.connectors.sqlitevec/1.74.0-preview",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "NUGET.md",
+        "VECTORDATA-CONNECTORS-NUGET.md",
+        "icon.png",
+        "lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll",
+        "lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.xml",
+        "lib/net462/Microsoft.SemanticKernel.Connectors.SqliteVec.dll",
+        "lib/net462/Microsoft.SemanticKernel.Connectors.SqliteVec.xml",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll",
+        "lib/net8.0/Microsoft.SemanticKernel.Connectors.SqliteVec.xml",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll",
+        "lib/netstandard2.0/Microsoft.SemanticKernel.Connectors.SqliteVec.xml",
+        "microsoft.semantickernel.connectors.sqlitevec.1.74.0-preview.nupkg.sha512",
+        "microsoft.semantickernel.connectors.sqlitevec.nuspec"
+      ]
+    },
     "Microsoft.SemanticKernel.Core/1.75.0": {
       "sha512": "cbQDbHYWU7hvR0j4B4uV9pxj+mL9seZo/130ckdlfbfMGly4mNiYI64DAQ9dF53CM8xt50eBXqmyedYv6DGysg==",
       "type": "package",
@@ -4934,6 +5039,25 @@
         "sixlabors.imagesharp.drawing.128.png",
         "sixlabors.imagesharp.drawing.2.1.7.nupkg.sha512",
         "sixlabors.imagesharp.drawing.nuspec"
+      ]
+    },
+    "sqlite-vec/0.1.7-alpha.2.1": {
+      "sha512": "JCN6wMW9cX7e6tO6BZRBEdLT1qq8cRlQ5AdPvl6ZRjTKOJ2JjQXYI+wIAMb4EOXiDbbpt0IIv5rkkbPOMlrkRQ==",
+      "type": "package",
+      "path": "sqlite-vec/0.1.7-alpha.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/netstandard2.0/sqlite-vec.props",
+        "build/netstandard2.0/sqlite-vec.targets",
+        "contentFiles/cs/netstandard2.0/Vector/Vector.cs",
+        "runtimes/linux-arm64/native/vec0.so",
+        "runtimes/linux-x64/native/vec0.so",
+        "runtimes/osx-arm64/native/vec0.dylib",
+        "runtimes/osx-x64/native/vec0.dylib",
+        "runtimes/win-x64/native/vec0.dll",
+        "sqlite-vec.0.1.7-alpha.2.1.nupkg.sha512",
+        "sqlite-vec.nuspec"
       ]
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.11": {
@@ -5466,31 +5590,34 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Azure.AI.OpenAI >= 2.9.0-beta.1",
       "IronOcr >= 2026.5.2",
       "IronPdf >= 2026.5.2",
       "KnowledgeOps.AI >= 1.0.0",
-      "Microsoft.EntityFrameworkCore.Design >= 10.0.7"
+      "Microsoft.EntityFrameworkCore.Design >= 10.0.7",
+      "Microsoft.Extensions.AI.OpenAI >= 10.5.0",
+      "Microsoft.SemanticKernel.Connectors.SqliteVec >= 1.74.0-preview"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Trevoir\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
+      "projectUniqueName": "C:\\Users\\user\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
       "projectName": "KnowledgeOps.Web",
-      "projectPath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
-      "packagesPath": "C:\\Users\\Trevoir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\obj\\",
+      "projectPath": "C:\\Users\\user\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\KnowledgeOps.Web.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.Web\\obj\\",
       "projectStyle": "PackageReference",
       "centralPackageVersionsManagementEnabled": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Trevoir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5504,11 +5631,10 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.AI\\KnowledgeOps.AI.csproj": {
-              "projectPath": "C:\\Users\\Trevoir\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.AI\\KnowledgeOps.AI.csproj"
+            "C:\\Users\\user\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.AI\\KnowledgeOps.AI.csproj": {
+              "projectPath": "C:\\Users\\user\\OneDrive\\Courses\\Semantic Kernel SDK - Integrating AI in Business Applications\\demo\\KnowledgeOps.AI\\KnowledgeOps.AI.csproj"
             }
           }
         }
@@ -5523,13 +5649,17 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "11.0.100"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
+          "Azure.AI.OpenAI": {
+            "target": "Package",
+            "version": "[2.9.0-beta.1, )",
+            "versionCentrallyManaged": true
+          },
           "IronOcr": {
             "target": "Package",
             "version": "[2026.5.2, )",
@@ -5544,20 +5674,33 @@
             "target": "Package",
             "version": "[10.0.7, )",
             "versionCentrallyManaged": true
+          },
+          "Microsoft.Extensions.AI.OpenAI": {
+            "target": "Package",
+            "version": "[10.5.0, )",
+            "versionCentrallyManaged": true
+          },
+          "Microsoft.SemanticKernel.Connectors.SqliteVec": {
+            "target": "Package",
+            "version": "[1.74.0-preview, )",
+            "versionCentrallyManaged": true
           }
         },
         "centralPackageVersions": {
+          "Azure.AI.OpenAI": "2.9.0-beta.1",
           "IronOcr": "2026.5.2",
           "IronPdf": "2026.5.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.7",
           "Microsoft.EntityFrameworkCore.Design": "10.0.7",
           "Microsoft.EntityFrameworkCore.Sqlite": "10.0.7",
+          "Microsoft.Extensions.AI.OpenAI": "10.5.0",
           "Microsoft.Extensions.Hosting": "10.0.7",
           "Microsoft.Extensions.Logging.Console": "10.0.7",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "10.0.7",
           "Microsoft.Extensions.Options.DataAnnotations": "10.0.7",
           "Microsoft.SemanticKernel": "1.75.0",
           "Microsoft.SemanticKernel.Connectors.AzureOpenAI": "1.75.0",
+          "Microsoft.SemanticKernel.Connectors.SqliteVec": "1.74.0-preview",
           "Microsoft.SemanticKernel.Plugins.Core": "1.75.0-preview"
         },
         "imports": [
@@ -5571,24 +5714,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[10.0.3, 10.0.3]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[10.0.3, 10.0.3]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[10.0.3, 10.0.3]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[10.0.3, 10.0.3]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -5597,7 +5722,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\11.0.100-preview.2.26159.112/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
