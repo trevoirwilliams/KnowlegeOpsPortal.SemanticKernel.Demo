@@ -34,6 +34,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+builder.Services.AddSqliteVectorStore(_ => connectionString);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -78,7 +79,6 @@ builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(ser
         .GetEmbeddingClient(options.EmbeddingDeploymentName)
         .AsIEmbeddingGenerator(options.EmbeddingDimensions);
 });
-builder.Services.AddSqliteVectorStore(_ => connectionString);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -88,6 +88,8 @@ builder.Services.AddScoped<IDocumentUploadService, DocumentUploadService>();
 builder.Services.AddScoped<IDocumentProcessingService, DocumentProcessingService>();
 builder.Services.AddScoped<IDocumentChunkingService, DocumentChunkingService>();
 builder.Services.AddScoped<IDocumentEmbeddingService, DocumentEmbeddingService>();
+builder.Services.AddScoped<IDocumentRetrievalService, DocumentRetrievalService>();
+
 builder.Services.AddScoped<ICopilotHistorySummarizerService, CopilotHistorySummarizerService>();
 
 builder.Services.AddHostedService<CopilotHistoryCleanupWorkerService>();

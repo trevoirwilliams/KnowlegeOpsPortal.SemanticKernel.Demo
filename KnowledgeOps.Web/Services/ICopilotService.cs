@@ -2,6 +2,7 @@ using KnowledgeOps.AI.Services;
 using KnowledgeOps.Domain.Models;
 using KnowledgeOps.Domain.Models.Enums;
 using KnowledgeOps.Web.Models.Copilot;
+using KnowledgeOps.Web.Models.Retrieval;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.ChatCompletion;
 
@@ -20,6 +21,7 @@ public sealed class CopilotService(
     ICurrentUserService currentUserService,
     IOptions<CopilotHistoryOptions> options,
     ICopilotHistorySummarizerService historySummarizer,
+    IDocumentRetrievalService documentRetrievalService,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
@@ -79,6 +81,18 @@ public sealed class CopilotService(
         {
             AddPersistedMessageToHistory(history, message);
         }
+
+        KnowledgeRetrievalResult retrievedKnowledge =
+            await documentRetrievalService.RetrieveRelevantKnowledgeAsync(
+        new KnowledgeRetrievalRequest
+        {
+            Question = request.Message,
+            EntityType = request.Context?.EntityType,
+            EntityId = request.Context?.EntityId,
+            UserId = userId,
+            MaxResults = 5
+        },
+        cancellationToken);
 
         history.AddUserMessage(request.Message.Trim());
 

@@ -9,6 +9,7 @@
     <Folder Include="Models\Account\" />
     <Folder Include="Models\Copilot\" />
     <Folder Include="Models\Requests\" />
+    <Folder Include="Models\Retrieval\" />
     <Folder Include="Models\VectorStores\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Documents\" />

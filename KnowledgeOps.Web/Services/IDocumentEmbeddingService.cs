@@ -28,7 +28,6 @@ public class DocumentEmbeddingService(
     IOptions<AzureOpenAIOptions> azureOpenAIOptions,
     ILogger<DocumentEmbeddingService> logger) : IDocumentEmbeddingService
 {
-    private const string CollectionName = "portal_document_chunks";
     private readonly AzureOpenAIOptions _azureOpenAIOptions = azureOpenAIOptions.Value;
 
     public async Task EmbedDocumentAsync(Guid documentId, CancellationToken cancellationToken = default)
@@ -60,52 +59,14 @@ public class DocumentEmbeddingService(
 
         try
         {
-            VectorStoreCollectionDefinition collectionDefinition = new()
-            {
-                EmbeddingGenerator = embeddingGenerator,
-                Properties =
-                [
-                    new VectorStoreKeyProperty(
-                        nameof(SearchableDocumentChunk.Key),
-                        typeof(string)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.PortalDocumentId),
-                        typeof(string)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.PortalDocumentChunkId),
-                        typeof(string)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.ChunkIndex),
-                        typeof(int)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.SourceFileName),
-                        typeof(string)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.DocumentTags),
-                        typeof(string)),
-
-                    new VectorStoreDataProperty(
-                        nameof(SearchableDocumentChunk.Text),
-                        typeof(string)),
-
-                    new VectorStoreVectorProperty(
-                        nameof(SearchableDocumentChunk.EmbeddingText),
-                        typeof(string),
-                        dimensions: _azureOpenAIOptions.EmbeddingDimensions)
-                    {
-                        DistanceFunction = DistanceFunction.CosineDistance
-                    }
-                ]
-            };
+            VectorStoreCollectionDefinition collectionDefinition =
+                DocumentChunkVectorCollection.CreateDefinition(
+                    embeddingGenerator,
+                    _azureOpenAIOptions);
 
             VectorStoreCollection<string, SearchableDocumentChunk> collection =
                 vectorStore.GetCollection<string, SearchableDocumentChunk>(
-                    CollectionName, collectionDefinition);
+                    DocumentChunkVectorCollection.CollectionName, collectionDefinition);
 
             await collection.EnsureCollectionExistsAsync(cancellationToken);
             SearchableDocumentChunk[] records = document.Chunks
