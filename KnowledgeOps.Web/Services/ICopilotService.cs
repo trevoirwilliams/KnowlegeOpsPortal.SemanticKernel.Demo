@@ -94,7 +94,14 @@ public sealed class CopilotService(
         },
         cancellationToken);
 
-        history.AddUserMessage(request.Message.Trim());
+        history.AddSystemMessage(BuildRetrievedKnowledgeMessage(retrievedKnowledge));
+
+        history.AddUserMessage($"""
+            User question:
+            {request.Message.Trim()}
+
+            Use the current portal context, conversation history, and retrieved document knowledge when relevant.
+            """);
 
         logger.LogInformation(
             "Sending copilot request. Area: {Area}, EntityType: {EntityType}, EntityId: {EntityId}",
@@ -159,16 +166,63 @@ public sealed class CopilotService(
         return $"""
         You are the embedded copilot for {area}.
 
-        Your job is to help users understand information, summarize business context,
-        clarify next steps, and reason over the current portal workflow.
+        Your job is to help users understand information, summarize business context, clarify next steps, and reason over the current portal workflow.
 
         Follow these rules:
         - Stay focused on the user's current page and task.
         - Use the supplied page context when it is relevant.
+        - Use retrieved document knowledge when it is supplied.
+        - Treat retrieved document knowledge as the primary source for document-specific answers.
         - Do not claim that you accessed documents, databases, or systems unless that information was supplied.
         - Do not invent missing business facts.
-        - If the available context is not enough, say what additional information would be needed.
+        - If retrieved document knowledge does not contain enough information, say that the available document knowledge does not provide enough information.
+        - If the user asks a general question that does not require document knowledge, answer normally but stay relevant to the portal workflow.
         - Keep responses professional, practical, and concise.
+        """;
+    }
+
+    private static string BuildRetrievedKnowledgeMessage(
+    KnowledgeRetrievalResult retrievalResult)
+    {
+        if (!retrievalResult.HasRelevantContent)
+        {
+            return """
+            Retrieved document knowledge:
+            No relevant document chunks were retrieved for this question.
+
+            Instruction:
+            If the user's question requires document-specific facts, say that the available document knowledge does not provide enough information.
+            """;
+        }
+
+        var chunks = retrievalResult.Chunks
+            .OrderBy(chunk => chunk.Score ?? double.MaxValue)
+            .Select((chunk, index) => $"""
+            Source {index + 1}
+            File: {chunk.SourceFileName}
+            Document ID: {chunk.DocumentId}
+            Chunk ID: {chunk.ChunkId}
+            Chunk Index: {chunk.ChunkIndex}
+            Retrieval Score: {chunk.Score?.ToString("0.####") ?? "N/A"}
+            Tags: {ValueOrFallback(chunk.DocumentTags)}
+
+            Content:
+            {chunk.Text}
+            """);
+
+        return $"""
+        Retrieved document knowledge:
+        The following chunks were retrieved from uploaded document knowledge for the user's current question.
+        Use this knowledge when answering document-specific questions.
+
+        {string.Join(Environment.NewLine + Environment.NewLine, chunks)}
+
+        Grounding instructions:
+        - Answer using the retrieved document knowledge when it is relevant.
+        - Do not add document-specific facts that are not supported by the retrieved knowledge.
+        - If the retrieved knowledge is insufficient, say that the available document knowledge does not provide enough information.
+        - Do not mention retrieval scores to the user.
+        - Do not expose internal chunk IDs unless the user asks for source details.
         """;
     }
 
