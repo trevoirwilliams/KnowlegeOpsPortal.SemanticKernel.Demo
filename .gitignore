@@ -366,3 +366,4 @@ KnowledgeOps.Console/obj/project.nuget.cache
 KnowledgeOps.Web/obj/KnowledgeOps.Web.csproj.nuget.dgspec.json
 KnowledgeOps.Web/obj/project.assets.json
 KnowledgeOps.Web/obj/project.nuget.cache
+KnowledgeOps.Web/App_Data/
