@@ -147,7 +147,7 @@
             if (data.conversationId) {
                 conversationId = data.conversationId;
             }
-            appendMessage("assistant", data.message ?? "The assistant returned an empty response.");
+            appendMessage("assistant", data.message ?? "The assistant returned an empty response.", data.sources ?? []);
         } catch (error) {
             console.error("Assistant request failed.", error);
             appendMessage("assistant", "The assistant could not be reached. Please try again.");
@@ -208,7 +208,7 @@
         }
     }
 
-    function appendMessage(role, text) {
+    function appendMessage(role, text, sources = []) {
         removeEmptyState();
 
         const item = document.createElement("article");
@@ -225,8 +225,75 @@
         body.textContent = text;
 
         item.append(label, body);
+        if (role === "assistant" && Array.isArray(sources) && sources.length > 0) 
+        {
+            item.appendChild(createSourcesElement(sources));
+        }
+
         messages.appendChild(item);
         messages.scrollTop = messages.scrollHeight;
+    }
+
+    function createSourcesElement(sources) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "portal-assistant-sources";
+
+        const heading = document.createElement("div");
+        heading.className = "portal-assistant-sources-heading";
+        heading.textContent = "Sources";
+
+        const list = document.createElement("ol");
+        list.className = "portal-assistant-sources-list";
+
+        for (const source of sources) {
+            const item = document.createElement("li");
+            item.className = "portal-assistant-source-item";
+
+            const title = document.createElement("div");
+            title.className = "portal-assistant-source-title";
+            title.textContent = formatSourceTitle(source);
+
+            const meta = document.createElement("div");
+            meta.className = "portal-assistant-source-meta";
+            meta.textContent = formatSourceMeta(source);
+
+            item.append(title, meta);
+
+            if (source.previewText) {
+                const preview = document.createElement("p");
+                preview.className = "portal-assistant-source-preview";
+                preview.textContent = source.previewText;
+                item.appendChild(preview);
+            }
+
+            list.appendChild(item);
+        }
+
+        wrapper.append(heading, list);
+        return wrapper;
+    }
+
+    function formatSourceTitle(source) {
+        const fileName = source.sourceFileName || "Uploaded document";
+        const chunkIndex = Number.isInteger(source.chunkIndex)
+            ? `Chunk ${source.chunkIndex}`
+            : "Document section";
+
+        return `${fileName} — ${chunkIndex}`;
+    }
+
+    function formatSourceMeta(source) {
+        const parts = [];
+
+        if (source.documentTags) {
+            parts.push(`Tags: ${source.documentTags}`);
+        }
+
+        if (source.chunkId) {
+            parts.push(`Reference: ${source.chunkId}`);
+        }
+
+        return parts.join(" • ");
     }
 
     function removeEmptyState() {

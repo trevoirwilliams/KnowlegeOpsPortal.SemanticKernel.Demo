@@ -121,6 +121,9 @@ public sealed class CopilotService(
         assistantMessage,
         cancellationToken);
 
+        IReadOnlyList<CopilotSourceReference> sources =
+        BuildSourceReferences(retrievedKnowledge);
+
         return new CopilotResponse
         {
             ConversationId = conversation.Id,
@@ -128,7 +131,8 @@ public sealed class CopilotService(
                 ? "I could not generate a response for that request."
                 : response,
             ContextSummary = BuildContextSummary(request.Context),
-            CreatedAt = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow,
+            Sources = sources
         };
     }
 
@@ -246,6 +250,56 @@ public sealed class CopilotService(
         Metadata:
         {metadata}
         """;
+    }
+
+    private static IReadOnlyList<CopilotSourceReference> BuildSourceReferences(
+    KnowledgeRetrievalResult retrievalResult)
+    {
+        if (!retrievalResult.HasRelevantContent)
+        {
+            return [];
+        }
+
+        return retrievalResult.Chunks
+            .OrderBy(chunk => chunk.Score ?? double.MaxValue)
+            .GroupBy(chunk => new
+            {
+                chunk.DocumentId,
+                chunk.ChunkId
+            })
+            .Select(group => group.First())
+            .Take(5)
+            .Select(chunk => new CopilotSourceReference
+            {
+                SourceFileName = chunk.SourceFileName,
+                DocumentId = chunk.DocumentId,
+                ChunkId = chunk.ChunkId,
+                ChunkIndex = chunk.ChunkIndex,
+                DocumentTags = chunk.DocumentTags,
+                Score = chunk.Score,
+                PreviewText = CreateSourcePreview(chunk.Text)
+            })
+            .ToList();
+    }
+
+    private static string CreateSourcePreview(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return string.Empty;
+        }
+
+        const int maxLength = 240;
+
+        string normalized = string.Join(
+            " ",
+            text.Split(
+                new[] { ' ', '\r', '\n', '\t' },
+                StringSplitOptions.RemoveEmptyEntries));
+
+        return normalized.Length <= maxLength
+            ? normalized
+            : $"{normalized[..maxLength]}...";
     }
 
     private static string? BuildContextSummary(CopilotPageContext? context)

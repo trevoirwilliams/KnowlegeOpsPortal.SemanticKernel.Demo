@@ -10,5 +10,7 @@ public sealed class CopilotResponse
 
     public string? ContextSummary { get; init; }
 
+    public IReadOnlyList<CopilotSourceReference> Sources { get; init; } = [];
+
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
 }
