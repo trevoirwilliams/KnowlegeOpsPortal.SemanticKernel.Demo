@@ -140,3 +140,47 @@ body {
         right: 1rem;
     }
 }
+
+.portal-assistant-sources {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.portal-assistant-sources-heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.portal-assistant-sources-list {
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+}
+
+.portal-assistant-source-item {
+    margin-bottom: 0.65rem;
+}
+
+.portal-assistant-source-item:last-child {
+    margin-bottom: 0;
+}
+
+.portal-assistant-source-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.portal-assistant-source-meta {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.portal-assistant-source-preview {
+    font-size: 0.8rem;
+    color: #495057;
+    margin: 0.25rem 0 0;
+}

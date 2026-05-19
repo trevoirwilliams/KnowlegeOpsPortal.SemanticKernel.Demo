@@ -17,13 +17,19 @@
 <section class="portal-assistant d-none"
          data-assistant
          data-endpoint="@Url.Action("Message", "Copilot")"
+         data-history-endpoint="@Url.Action("History", "Copilot")"
+         data-clear-endpoint="@Url.Action("ClearHistory", "Copilot")"
          aria-label="@Model.Title">
     <header class="portal-assistant-header">
         <div>
             <h2 class="h6 mb-0">@Model.Title</h2>
             <p class="small mb-0">@Model.Subtitle</p>
         </div>
-
+        <button type="button"
+                class="btn btn-sm btn-outline-light"
+                data-assistant-clear>
+            Clear
+        </button>
         <button type="button"
                 class="btn-close btn-close-white"
                 data-assistant-close

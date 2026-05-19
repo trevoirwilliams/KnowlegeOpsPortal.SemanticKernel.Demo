@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using KnowledgeOps.AI.Repositories;
+using KnowledgeOps.Domain.Repositories;
 using Microsoft.SemanticKernel;
 
 namespace KnowledgeOps.AI.Plugins;

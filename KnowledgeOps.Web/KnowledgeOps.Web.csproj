@@ -5,9 +5,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="BackgroundWorkers\" />
+    <Folder Include="Models\Account\" />
     <Folder Include="Models\Copilot\" />
-    <Folder Include="Models\Documents\" />
     <Folder Include="Models\Requests\" />
+    <Folder Include="Models\Retrieval\" />
+    <Folder Include="Models\VectorStores\" />
+    <Folder Include="Views\Account\" />
     <Folder Include="Views\Documents\" />
   </ItemGroup>
 
@@ -18,4 +22,10 @@
     <UserSecretsId>f26e800f-68c5-4974-bd1a-6211d136f6ad</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" /> 
+    <PackageReference Include="IronPdf" />
+    <PackageReference Include="IronOcr" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" />
+  </ItemGroup>
 </Project>

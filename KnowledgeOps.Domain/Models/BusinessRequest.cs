@@ -1,4 +1,7 @@
-namespace KnowledgeOps.AI.Models;
+
+using KnowledgeOps.Domain.Models.Enums;
+
+namespace KnowledgeOps.Domain.Models;
 
 public sealed class BusinessRequest
 {

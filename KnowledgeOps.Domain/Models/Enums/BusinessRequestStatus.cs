@@ -1,6 +1,6 @@
 using System;
 
-namespace KnowledgeOps.AI.Models;
+namespace KnowledgeOps.Domain.Models.Enums;
 
 public enum BusinessRequestStatus
 {

@@ -13,10 +13,14 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
-  </ItemGroup>
+</ItemGroup>
 
     <ItemGroup>
       <Content Include="Plugins\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\KnowledgeOps.Domain\KnowledgeOps.Domain.csproj" />
     </ItemGroup>
 
 </Project>

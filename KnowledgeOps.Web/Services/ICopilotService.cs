@@ -1,5 +1,9 @@
 using KnowledgeOps.AI.Services;
+using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 using KnowledgeOps.Web.Models.Copilot;
+using KnowledgeOps.Web.Models.Retrieval;
+using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace KnowledgeOps.Web.Services;
@@ -13,6 +17,11 @@ public interface ICopilotService
 
 public sealed class CopilotService(
     IKnowledgeOpsChatClient chatClient,
+    ICopilotConversationService conversationService,
+    ICurrentUserService currentUserService,
+    IOptions<CopilotHistoryOptions> options,
+    ICopilotHistorySummarizerService historySummarizer,
+    IDocumentRetrievalService documentRetrievalService,
     ILogger<CopilotService> logger) : ICopilotService
 {
     public async Task<CopilotResponse> GetResponseAsync(
@@ -27,6 +36,30 @@ public sealed class CopilotService(
                 "A message is required before the copilot can respond.",
                 nameof(request));
         }
+        var settings = options.Value;
+        var userId = currentUserService.UserId;
+        var conversation = await conversationService.GetOrCreateConversationAsync(
+            request,
+            userId,
+            TimeSpan.FromHours(settings.ConversationRelevanceHours),
+            cancellationToken);
+
+        await conversationService.AddMessageAsync(
+            conversation.Id,
+            CopilotMessageRole.User,
+            request.Message,
+            cancellationToken);
+
+        await historySummarizer.SummarizeIfNeededAsync(conversation, cancellationToken);
+
+        var summarizedThroughSequence = conversation.SummarizedThroughSequenceNumber ?? 0;
+
+        var recentMessages = await conversationService.GetMessagesForModelAsync(
+            conversation.Id,
+            userId,
+            settings.MaxModelMessages,
+            summarizedThroughSequence,
+            cancellationToken);
 
         var history = new ChatHistory();
 
@@ -37,7 +70,38 @@ public sealed class CopilotService(
             history.AddUserMessage(BuildContextMessage(request.Context));
         }
 
-        history.AddUserMessage(request.Message.Trim());
+        if (!string.IsNullOrWhiteSpace(conversation.Summary))
+        {
+            history.AddSystemMessage($"""
+            Conversation memory summary from earlier in this same chat:
+            {conversation.Summary}
+            """);
+        }
+        foreach (var message in recentMessages)
+        {
+            AddPersistedMessageToHistory(history, message);
+        }
+
+        KnowledgeRetrievalResult retrievedKnowledge =
+            await documentRetrievalService.RetrieveRelevantKnowledgeAsync(
+        new KnowledgeRetrievalRequest
+        {
+            Question = request.Message,
+            EntityType = request.Context?.EntityType,
+            EntityId = request.Context?.EntityId,
+            UserId = userId,
+            MaxResults = 5
+        },
+        cancellationToken);
+
+        history.AddSystemMessage(BuildRetrievedKnowledgeMessage(retrievedKnowledge));
+
+        history.AddUserMessage($"""
+            User question:
+            {request.Message.Trim()}
+
+            Use the current portal context, conversation history, and retrieved document knowledge when relevant.
+            """);
 
         logger.LogInformation(
             "Sending copilot request. Area: {Area}, EntityType: {EntityType}, EntityId: {EntityId}",
@@ -47,14 +111,54 @@ public sealed class CopilotService(
 
         var response = await chatClient.ReplyAsync(history, cancellationToken);
 
+        var assistantMessage = string.IsNullOrWhiteSpace(response)
+        ? "I could not generate a response for that request."
+        : response;
+
+        await conversationService.AddMessageAsync(
+        conversation.Id,
+        CopilotMessageRole.Assistant,
+        assistantMessage,
+        cancellationToken);
+
+        IReadOnlyList<CopilotSourceReference> sources =
+        BuildSourceReferences(retrievedKnowledge);
+
         return new CopilotResponse
         {
+            ConversationId = conversation.Id,
             Message = string.IsNullOrWhiteSpace(response)
                 ? "I could not generate a response for that request."
                 : response,
             ContextSummary = BuildContextSummary(request.Context),
-            CreatedAt = DateTimeOffset.UtcNow
+            CreatedAt = DateTimeOffset.UtcNow,
+            Sources = sources
         };
+    }
+
+    private static void AddPersistedMessageToHistory(
+    ChatHistory history,
+    CopilotMessage message)
+    {
+        if (string.IsNullOrWhiteSpace(message.Content))
+        {
+            return;
+        }
+
+        switch (message.Role)
+        {
+            case CopilotMessageRole.User:
+                history.AddUserMessage(message.Content);
+                break;
+
+            case CopilotMessageRole.Assistant:
+                history.AddAssistantMessage(message.Content);
+                break;
+
+            case CopilotMessageRole.System:
+                history.AddSystemMessage(message.Content);
+                break;
+        }
     }
 
     private static string BuildSystemMessage(CopilotPageContext? context)
@@ -66,16 +170,63 @@ public sealed class CopilotService(
         return $"""
         You are the embedded copilot for {area}.
 
-        Your job is to help users understand information, summarize business context,
-        clarify next steps, and reason over the current portal workflow.
+        Your job is to help users understand information, summarize business context, clarify next steps, and reason over the current portal workflow.
 
         Follow these rules:
         - Stay focused on the user's current page and task.
         - Use the supplied page context when it is relevant.
+        - Use retrieved document knowledge when it is supplied.
+        - Treat retrieved document knowledge as the primary source for document-specific answers.
         - Do not claim that you accessed documents, databases, or systems unless that information was supplied.
         - Do not invent missing business facts.
-        - If the available context is not enough, say what additional information would be needed.
+        - If retrieved document knowledge does not contain enough information, say that the available document knowledge does not provide enough information.
+        - If the user asks a general question that does not require document knowledge, answer normally but stay relevant to the portal workflow.
         - Keep responses professional, practical, and concise.
+        """;
+    }
+
+    private static string BuildRetrievedKnowledgeMessage(
+    KnowledgeRetrievalResult retrievalResult)
+    {
+        if (!retrievalResult.HasRelevantContent)
+        {
+            return """
+            Retrieved document knowledge:
+            No relevant document chunks were retrieved for this question.
+
+            Instruction:
+            If the user's question requires document-specific facts, say that the available document knowledge does not provide enough information.
+            """;
+        }
+
+        var chunks = retrievalResult.Chunks
+            .OrderBy(chunk => chunk.Score ?? double.MaxValue)
+            .Select((chunk, index) => $"""
+            Source {index + 1}
+            File: {chunk.SourceFileName}
+            Document ID: {chunk.DocumentId}
+            Chunk ID: {chunk.ChunkId}
+            Chunk Index: {chunk.ChunkIndex}
+            Retrieval Score: {chunk.Score?.ToString("0.####") ?? "N/A"}
+            Tags: {ValueOrFallback(chunk.DocumentTags)}
+
+            Content:
+            {chunk.Text}
+            """);
+
+        return $"""
+        Retrieved document knowledge:
+        The following chunks were retrieved from uploaded document knowledge for the user's current question.
+        Use this knowledge when answering document-specific questions.
+
+        {string.Join(Environment.NewLine + Environment.NewLine, chunks)}
+
+        Grounding instructions:
+        - Answer using the retrieved document knowledge when it is relevant.
+        - Do not add document-specific facts that are not supported by the retrieved knowledge.
+        - If the retrieved knowledge is insufficient, say that the available document knowledge does not provide enough information.
+        - Do not mention retrieval scores to the user.
+        - Do not expose internal chunk IDs unless the user asks for source details.
         """;
     }
 
@@ -99,6 +250,56 @@ public sealed class CopilotService(
         Metadata:
         {metadata}
         """;
+    }
+
+    private static IReadOnlyList<CopilotSourceReference> BuildSourceReferences(
+    KnowledgeRetrievalResult retrievalResult)
+    {
+        if (!retrievalResult.HasRelevantContent)
+        {
+            return [];
+        }
+
+        return retrievalResult.Chunks
+            .OrderBy(chunk => chunk.Score ?? double.MaxValue)
+            .GroupBy(chunk => new
+            {
+                chunk.DocumentId,
+                chunk.ChunkId
+            })
+            .Select(group => group.First())
+            .Take(5)
+            .Select(chunk => new CopilotSourceReference
+            {
+                SourceFileName = chunk.SourceFileName,
+                DocumentId = chunk.DocumentId,
+                ChunkId = chunk.ChunkId,
+                ChunkIndex = chunk.ChunkIndex,
+                DocumentTags = chunk.DocumentTags,
+                Score = chunk.Score,
+                PreviewText = CreateSourcePreview(chunk.Text)
+            })
+            .ToList();
+    }
+
+    private static string CreateSourcePreview(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return string.Empty;
+        }
+
+        const int maxLength = 240;
+
+        string normalized = string.Join(
+            " ",
+            text.Split(
+                new[] { ' ', '\r', '\n', '\t' },
+                StringSplitOptions.RemoveEmptyEntries));
+
+        return normalized.Length <= maxLength
+            ? normalized
+            : $"{normalized[..maxLength]}...";
     }
 
     private static string? BuildContextSummary(CopilotPageContext? context)

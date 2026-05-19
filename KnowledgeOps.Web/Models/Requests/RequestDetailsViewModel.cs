@@ -1,4 +1,5 @@
-using KnowledgeOps.AI.Models;
+using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 
 namespace KnowledgeOps.Web.Models.Requests;
 

@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using KnowledgeOps.AI.Models;
+using KnowledgeOps.Domain.Models;
+using KnowledgeOps.Domain.Models.Enums;
 
-namespace KnowledgeOps.AI.Repositories;
+namespace KnowledgeOps.Domain.Repositories;
 
 public interface IBusinessRequestRepository
 {

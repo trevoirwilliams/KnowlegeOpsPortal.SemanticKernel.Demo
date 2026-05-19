@@ -28,6 +28,11 @@ public interface IKnowledgeOpsChatClient
 
     Task<string> GetOpenBusinessRequestsAsync(
         CancellationToken cancellationToken = default);
+
+    Task<string> SummarizeConversationHistoryAsync(
+    string existingSummary,
+    string conversationText,
+    CancellationToken cancellationToken = default);
 }
 
 internal sealed class KnowledgeOpsChatClient(
@@ -146,6 +151,29 @@ internal sealed class KnowledgeOpsChatClient(
         var result = await kernel.InvokeAsync(
             "BusinessRequests",
             "get_open_business_requests",
+            cancellationToken: cancellationToken);
+
+        return result.ToString();
+    }
+
+    public async Task<string> SummarizeConversationHistoryAsync(
+        string existingSummary,
+        string conversationText,
+        CancellationToken cancellationToken = default)
+    {
+        var prompt = KnowledgeOpsPromptTemplates.ConversationHistorySummary;
+
+        var arguments = new KernelArguments
+        {
+            ["existingSummary"] = string.IsNullOrWhiteSpace(existingSummary)
+                ? "No previous summary."
+                : existingSummary,
+            ["conversationText"] = conversationText
+        };
+
+        var result = await kernel.InvokePromptAsync(
+            prompt,
+            arguments,
             cancellationToken: cancellationToken);
 
         return result.ToString();
