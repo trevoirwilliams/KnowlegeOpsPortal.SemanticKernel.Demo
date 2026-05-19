@@ -1,5 +1,3 @@
-using System.ClientModel;
-using Azure.AI.OpenAI;
 using KnowledgeOps.AI;
 using KnowledgeOps.Domain.Data;
 using KnowledgeOps.Domain.Models;
@@ -10,8 +8,6 @@ using KnowledgeOps.Web.Models.Documents;
 using KnowledgeOps.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,21 +61,6 @@ if (!string.IsNullOrWhiteSpace(ironOcrLicenseKey))
 builder.Services.AddControllersWithViews();
 builder.Services.AddKnowledgeOpsAI(builder.Configuration);
 
-builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(serviceProvider =>
-{
-    AzureOpenAIOptions options = serviceProvider
-        .GetRequiredService<IOptions<AzureOpenAIOptions>>()
-        .Value;
-
-    AzureOpenAIClient azureOpenAIClient = new(
-        new Uri(options.Endpoint),
-        new ApiKeyCredential(options.ApiKey));
-
-    return azureOpenAIClient
-        .GetEmbeddingClient(options.EmbeddingDeploymentName)
-        .AsIEmbeddingGenerator(options.EmbeddingDimensions);
-});
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<ICopilotService, CopilotService>();
@@ -96,9 +77,6 @@ builder.Services.AddHostedService<CopilotHistoryCleanupWorkerService>();
 builder.Services.AddHostedService<DocumentProcessingWorkerService>();
 builder.Services.AddHostedService<DocumentChunkingWorkerService>();
 builder.Services.AddHostedService<DocumentEmbeddingWorkerService>();
-
-
-builder.Services.AddScoped<IBusinessRequestRepository, InMemoryBusinessRequestRepository>();
 
 builder.Services
     .AddOptions<CopilotHistoryOptions>()

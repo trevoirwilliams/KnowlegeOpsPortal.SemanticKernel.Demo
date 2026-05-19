@@ -854,11 +854,6 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
-            "Azure.AI.OpenAI": {
-              "target": "Package",
-              "version": "[2.9.0-beta.1, )",
-              "versionCentrallyManaged": true
-            },
             "IronOcr": {
               "target": "Package",
               "version": "[2026.5.2, )",
@@ -872,11 +867,6 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "target": "Package",
               "version": "[10.0.7, )",
-              "versionCentrallyManaged": true
-            },
-            "Microsoft.Extensions.AI.OpenAI": {
-              "target": "Package",
-              "version": "[10.5.0, )",
               "versionCentrallyManaged": true
             },
             "Microsoft.SemanticKernel.Connectors.SqliteVec": {

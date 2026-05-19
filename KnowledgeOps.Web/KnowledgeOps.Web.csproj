@@ -26,8 +26,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" /> 
     <PackageReference Include="IronPdf" />
     <PackageReference Include="IronOcr" />
-    <PackageReference Include="Azure.AI.OpenAI" />
-    <PackageReference Include="Microsoft.Extensions.AI.OpenAI" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" />
   </ItemGroup>
 </Project>

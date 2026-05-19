@@ -1,7 +1,9 @@
-using System;
+using System.ClientModel;
+using Azure.AI.OpenAI;
 using KnowledgeOps.AI.Plugins;
 using KnowledgeOps.AI.Services;
 using KnowledgeOps.Domain.Repositories;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +25,31 @@ public static class ServiceCollectionExtensions
             .Bind(configuration.GetSection(AzureOpenAIOptions.SectionName))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+            services.AddSingleton<AzureOpenAIClient>(serviceProvider =>
+            {
+                AzureOpenAIOptions options = serviceProvider
+                    .GetRequiredService<IOptions<AzureOpenAIOptions>>()
+                    .Value;
+
+                return new AzureOpenAIClient(
+                    new Uri(options.Endpoint),
+                    new ApiKeyCredential(options.ApiKey));
+            });
+
+            services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(serviceProvider =>
+            {
+                AzureOpenAIOptions options = serviceProvider
+                    .GetRequiredService<IOptions<AzureOpenAIOptions>>()
+                    .Value;
+
+                AzureOpenAIClient azureOpenAIClient = serviceProvider
+                    .GetRequiredService<AzureOpenAIClient>();
+
+                return azureOpenAIClient
+                    .GetEmbeddingClient(options.EmbeddingDeploymentName)
+                    .AsIEmbeddingGenerator(options.EmbeddingDimensions);
+            });
 
         services.AddSingleton(sp =>
         {
@@ -60,7 +87,6 @@ public static class ServiceCollectionExtensions
             sp.GetRequiredService<Kernel>().GetRequiredService<IChatCompletionService>());
 
         services.AddSingleton<IKnowledgeOpsChatClient, KnowledgeOpsChatClient>();
-
         return services;
     }
 }
